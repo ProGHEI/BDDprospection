@@ -1,0 +1,18 @@
+; $ID$
+name = Test Will
+description = "Module de test"
+;package = public-action
+version = VERSION
+core = 7.x
+;script = 
+files[] = testwill.module
+;configure = admin/config/services/aggregator/settings
+;stylesheets[all][] = bddprospection.css
+;dependencies[]= //ici doivent être déclarés les modules qui doivent être activés afin de garantir le fonctionnement du module
+;package = "le nom du package" // permet de spécifier dans quel package de la page administration le module doit apparaître
+
+; Information added by drupal.org packaging script on 2013-01-16
+version = "1.0"
+project = "drupal"
+datestamp = "1358374870"
+

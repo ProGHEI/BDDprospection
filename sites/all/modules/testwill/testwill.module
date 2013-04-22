@@ -1,0 +1,108 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Used to aggregate syndicated content (RSS, RDF, and Atom).
+ */
+
+/**
+ * Denotes that a feed's items should never expire.
+ */
+//define('AGGREGATOR_CLEAR_NEVER', 0);
+
+
+
+
+
+
+/**
+ * Implements hook_permission().
+ */
+function testwill_permission(){
+  return array(
+    'access bddprospection' => array('title' => t('Access bddprospection'))
+);
+}
+
+
+
+
+ // DECLARER L'ADRESSE DES PAGES CONCERNEES PAR LE MODULE 
+ // http://www.kolossaldrupal.org/docs/informer-drupal-de-lexistence-de-cette-nouvelle-fonction
+/**
+ * Implements hook_menu(). 
+ */
+function testwill_menu() {
+$items = array();
+
+$items['testwill/principal'] = array(
+  'title' => 'MENU PRINCIPAL',
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('testwill_form_principal'),
+  'access arguments' => array('access bddprospection'),
+  'type' => MENU_CALLBACK,
+  //'file' => 'bddprospection_menu_principal.inc',
+);
+
+
+
+return $items;
+}
+
+
+
+function testwill_principal(){
+$content = drupal_get_form('testwill_principal_form');
+return $content;
+}
+
+function testwill_principal_form(){
+
+//Création de fieldset 
+  
+      // Cadre MenuPrincipal autour des champs
+       $form['menu_principal_fieldset'] = array(
+
+         '#type' => 'fieldset', 
+         '#title' => t('MENU PRINCIPAL'), 
+         '#weight' => 0, 
+         '#collapsible' => TRUE, 
+         '#collapsed' => FALSE,
+         );  
+  
+  
+$form['bouton_ajouter_un_appel'] = array(
+    '#type' => 'submit',
+    '#value' => t('Ajouter un appel'),
+    '#submit' => array('testwill_submit'),
+  );
+
+
+
+
+////Attribution Fieldset Sélection_entreprise
+    $form['menu_principal_fieldset']['bouton_ajouter_un_appel'] = $form['bouton_ajouter_un_appel'];
+    unset($form['bouton_ajouter_un_appel']);
+    
+  return $form;  
+}
+
+
+
+ function testwill_submit($form, &$form_state){
+    $form_state['redirect']='bddprospection/formulaire';
+    $form_state['rebuild'] = TRUE;
+ }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

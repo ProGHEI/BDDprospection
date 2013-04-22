@@ -1,0 +1,779 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Used to aggregate syndicated content (RSS, RDF, and Atom).
+ */
+
+/**
+ * Denotes that a feed's items should never expire.
+ */
+//define('AGGREGATOR_CLEAR_NEVER', 0);
+
+
+
+
+
+
+/**
+ * Implements hook_permission().
+ */
+function bddprospection_permission(){
+  return array(
+    'access bddprospection' => array('title' => t('Access bddprospection'))
+);
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+//Ici on explique à Drupal les différents blocs que l'on va créer
+
+
+//function bddprospection_block_info() {
+//  $blocks['current_posts'] = array(
+//    'info' => t('Current posts'), //The name that will appear in the block list.
+//    'cache' => DRUPAL_CACHE_PER_ROLE, //Default
+//  );
+//  return $blocks;
+//}
+
+
+
+
+////LE MODULE DEPLOIE UN BLOC  -> ex: menu... sur le côté de la page
+// function bddprospection_block(){
+//   
+//   
+// }
+
+
+
+ // DECLARER L'ADRESSE DES PAGES CONCERNEES PAR LE MODULE 
+ // http://www.kolossaldrupal.org/docs/informer-drupal-de-lexistence-de-cette-nouvelle-fonction
+/**
+ * Implements hook_menu(). 
+ */
+function bddprospection_menu() {
+$items = array();
+
+$items['bddprospection/menu_principal'] = array(
+  'title' => 'MENU PRINCIPAL',
+  'page callback' => 'drupal_get_form',
+  'page arguments' => array('bddprospection_principal'),
+  'access arguments' => array('access bddprospection'),
+  'type' => MENU_CALLBACK,
+  //'file' => 'bddprospection_menu_principal.inc',
+);
+
+$items['bddprospection/formulaire'] = array(
+    'title' => 'AJOUTER UN NOUVEL APPEL',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bddprospection_myform'),
+    'access callback' => TRUE,////RAJOUTER
+//'page callback' => 'bddprospection_myform',
+    'access arguments' => array('access bddprospection'),
+    'type' => MENU_CALLBACK,
+    'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
+  );
+
+
+return $items;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * 
+ ******  PAGE PRINCIPALE ******
+ * 
+*/
+
+function bddprospection_principal(){
+$content = drupal_get_form('bddprospection_principal_form');
+return $content;
+}
+
+function bddprospection_principal_form(){
+
+  //FIELD AJOUT APPEL
+    $form['fieldset_ajout_appel'] = array (
+        '#type' => 'fieldset',
+        '#title' => 'Ajouter un appel',
+        '#weight' => 0, 
+        '#collapsible' => TRUE, 
+        '#collapsed' => FALSE,
+    );
+    
+    $form['fieldset_ajout_appel']['boutton_ajout_appel'] = array (
+        '#value' => t('Accéder au formulaire'),
+        '#type' => 'submit',
+        '#submit' => array('bddprospection_action_ajouter_appel') /////JUSTE RAJOUTER
+    );
+
+  //FIELD LISTE APPEL
+  $form['fieldset_liste_appels'] = array (
+      '#type' => 'fieldset',
+      '#title' => 'Liste des appels',
+      '#weight' => 1, 
+      '#collapsible' => TRUE, 
+      '#collapsed' => FALSE,
+  );
+
+  $form['fieldset_liste_appels']['boutton_liste_appels_tous'] = array (
+      '#value' => t('Accéder à la liste des appels'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_liste_appel')  /////JUSTE RAJOUTER
+  );
+  
+  $form['fieldset_liste_appels']['boutton_liste_appels_BTP_BAA'] = array (
+      '#value' => t('Appels BTP - BAA'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_liste_appels_BTP_BAA')  /////JUSTE RAJOUTER
+  );
+  
+  $form['fieldset_liste_appels']['boutton_liste_appels_CM'] = array (
+      '#value' => t('Appels CM'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_liste_appel_CM')  /////JUSTE RAJOUTER
+  );
+   
+  $form['fieldset_liste_appels']['boutton_liste_appels_IMS_ESEA'] = array (
+      '#value' => t('Appels IMS - ESEA'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_liste_appels_IMS_ESEA')  /////JUSTE RAJOUTER
+  );
+  
+  $form['fieldset_liste_appels']['boutton_liste_appels_ITI'] = array (
+      '#value' => t('Appels ITI'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_liste_appels_ITI')  /////JUSTE RAJOUTER
+  );
+  
+  $form['fieldset_liste_appels']['boutton_liste_appels_CHIMIE_TIMTEX'] = array (
+      '#value' => t('Appels CHIMIE - TIMTex'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_liste_appels_CHIMIE_TIMTEX')  /////JUSTE RAJOUTER
+  );
+  
+  $form['fieldset_liste_appels']['boutton_liste_appels_INGENIERIE_GENERALE'] = array (
+      '#value' => t('Appels Ingénierie Génarale'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_liste_appels_INGENIERIE_GENERALE')  /////JUSTE RAJOUTER
+  );
+  
+  
+  
+
+  //FIELD REPORTING
+  $form['fieldset_reporting'] = array (
+      '#type' => 'fieldset',
+      '#title' => 'Reporting',
+      '#weight' => 2, 
+      '#collapsible' => TRUE, 
+      '#collapsed' => FALSE,
+  );
+
+   $form['fieldset_reporting']['boutton_reporting_appel_mois_dep'] = array (
+      '#value' => t('Appel/Mois/Departement'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_reporting_appel_mois_dep')  /////JUSTE RAJOUTER
+  );
+   
+  $form['fieldset_reporting']['boutton_reporting_appel_mois_int'] = array (
+      '#value' => t('Appel/Mois/Intéressement'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_reporting_appel_mois_int')  /////JUSTE RAJOUTER
+  );
+  
+  $form['fieldset_reporting']['boutton_reporting_appel_int'] = array (
+      '#value' => t('Appel/Intéressement'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_reporting_appel_int')  /////JUSTE RAJOUTER
+  );
+  
+  $form['fieldset_reporting']['boutton_reporting_courrier_plaq_rdv'] = array (
+      '#value' => t('Courrier/Plaquette/RDV'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_reporting_courrier_plaq_rdv')  /////JUSTE RAJOUTER
+  );
+   
+   
+  
+  //FIELD GESTION DES RAPPELS
+  $form['fieldset_rappel'] = array (
+      '#type' => 'fieldset',
+      '#title' => 'Rappel',
+      '#weight' => 3, 
+      '#collapsible' => TRUE, 
+      '#collapsed' => FALSE,
+  );
+   
+   $form['fieldset_rappel']['boutton1'] = array (
+      '#value' => t('BOUTONS A DEFINIR'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_A_DEFINIR')  /////JUSTE RAJOUTER
+  );
+     
+    return $form;
+}
+
+
+
+
+
+// DEFINITION DES ACTIONS SUBMIT
+
+    function bddprospection_action_ajouter_appel($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/formulaire';
+    }
+
+    function bddprospection_action_liste_appel($form, &$form_state) {
+      $query = db_select('bddprospectionprog_appel')
+       ->fields('bddprospectionprog_appel', array(
+         'Numero_Appel',
+         'Date_appel',
+         'Etudiant',
+         'Entreprise',
+         'Contact',
+         'Appreciation',
+         'Relance',
+         'Courriel_envoye',
+         'Plaquette_envoyee',
+         'Rendez_vous_obtenu',
+         'Date_rendez_vous',
+         'Remarques_complementaires',
+         'Rappele'))
+       ->range(0, 500);
+                
+      $result = $query->execute();
+      foreach ($result as $record) {
+      dpm($record);
+      }
+    }
+    
+   
+
+    function bddprospection_action_reporting_appel_mois_dep($form, &$form_state) {
+      // Perform the 2nd action
+    }
+
+    function bddprospection_action_reporting_appel_mois_int($form, &$form_state) {
+      // Perform the 2nd action
+    }
+
+    function bddprospection_action_reporting_appel_int($form, &$form_state) {
+      // Perform the 2nd action
+    }
+
+    function bddprospection_reporting_courrier_plaq_rdv($form, &$form_state) {
+      // Perform the 2nd action
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * 
+ ******  PAGE AJOUT APPEL ******
+ * 
+*/
+
+function bddprospection_myform(){
+$content = drupal_get_form('bddprospection_form');
+return $content;
+}
+
+//CREATION DU FORMULAIRE AJOUTER UN APPEL
+function bddprospection_form(){
+  
+ 
+  //Création de fieldset 
+  
+      // Cadre Entreprise autour des champs
+       $form['selection_entreprise'] = array(
+
+         '#type' => 'fieldset', 
+         '#title' => t('ENTREPRISE EXISTANTE'), 
+         '#weight' => 0, 
+         '#collapsible' => TRUE, 
+         '#collapsed' => FALSE,
+         );
+  
+    // Cadre Entreprise autour des champs
+    $form['entreprise'] = array(
+
+      '#type' => 'fieldset', 
+      '#title' => t('ENTREPRISE'), 
+      '#weight' => 1, 
+      '#collapsible' => TRUE, 
+      '#collapsed' => FALSE,
+      );
+
+    //Cadre Contact autour des champs
+    $form['contact'] = array(
+      '#type' => 'fieldset', 
+      '#title' => t('CONTACT'), 
+      '#weight' => 2, 
+      '#collapsible' => TRUE, 
+      '#collapsed' => FALSE,
+      );
+
+    //Cadre Appel autour des champs
+    $form['appel'] = array(
+      '#type' => 'fieldset', 
+      '#title' => t('APPEL'), 
+      '#weight' => 3, 
+      '#collapsible' => TRUE, 
+      '#collapsed' => FALSE,
+      );
+
+
+
+//
+//Création des différents champs de la page
+//
+
+  ////Création des champs Entreprise 
+  
+  //COMBOBOX
+  $form['selection_entreprise_liste'] = array(
+  '#title' => 'Sélectionner une entreprise',
+  '#type' => 'select',
+  '#options' => array(
+         0 => 'test1',
+         1 => 'test2',
+         2 => 'test3',
+         3 => 'test4',
+         4 => 'test5',
+         ),
+  );  
+    
+////Création des champs Entreprise
+  $form['entreprise_nom'] = array(
+  '#title' => 'Nom de l\'entreprise',
+  '#type' => 'textfield',
+  '#required' => TRUE,
+  );
+
+  $form['entreprise_secteur'] = array(
+  '#title' => 'Secteur d\'activité',
+  '#type' => 'textfield',
+  );
+
+  $form['entreprise_adress'] = array(
+  '#title' => 'Adresse',
+  '#type' => 'textfield',
+  );
+
+  $form['entreprise_cp'] = array(
+  '#title' => 'Code Postal',
+  '#type' => 'textfield',
+  );
+
+  $form['entreprise_ville'] = array(
+  '#title' => 'Ville',
+  '#type' => 'textfield',
+  );
+
+  $form['entreprise_telephone'] = array(
+  '#title' => 'Téléphone',
+  '#type' => 'textfield',
+  );
+
+  $form['entreprise_fax'] = array(
+  '#title' => 'Fax',
+  '#type' => 'textfield',
+  );
+
+  $form['entreprise_mail'] = array(
+  '#title' => 'E-mail',
+  '#type' => 'textfield',
+  );
+ 
+  
+  
+  
+////Création des champs Contact
+  $form['contact_nom'] = array(
+  '#title' => 'Nom',
+  '#type' => 'textfield',
+  );
+
+  $form['contact_prenom'] = array(
+  '#title' => 'Prénom',
+  '#type' => 'textfield',
+  );
+
+  $form['contact_fonction'] = array(
+  '#title' => 'Fonction',
+  '#type' => 'textfield',
+  );
+
+  $form['contact_telephone'] = array(
+  '#title' => 'Téléphone',
+  '#type' => 'textfield',
+  );
+
+  $form['contact_portable'] = array(
+  '#title' => 'Portable',
+  '#type' => 'textfield',
+  );
+
+  $form['contact_mail'] = array(
+  '#title' => 'E-mail',
+  '#type' => 'textfield',
+  );
+  
+    
+  
+  
+  
+  
+ 
+  //Création d'un champ date
+  //Attention la variable date_par_default est utilisée pour tous les champs dates de la page ;P
+  $today = getdate();
+  $today_formaté = '$today[year]'.'-'.'$today[mon]'.'-'.'$today[mday]';
+  
+  $format_date_appel = 'Y-m-d';
+  $form['appel_date_appel'] = array(
+     '#type' => 'date_select', // types 'date_text' and 'date_timezone' are also supported. See .inc file.
+     '#title' => t('Sélectionner la date de l\'appel'),
+     '#default_value' => $today_formaté, 
+     '#date_format' => $format_date_appel,
+     '#date_label_position' => 'within', // See other available attributes and what they do in date_api_elements.inc
+     '#date_timezone' => 'Europe/Paris',
+     '#date_year_range' => '0:+15',
+  );
+ 
+  //COMBOBOX
+  $form['appel_appreciation'] = array(
+  '#title' => 'Appréciation',
+  '#type' => 'select',
+  '#options' => array(
+         0 => 'Pas de réponse',
+         1 => 'Pas intéressée',
+         2 => 'Intéressée',
+         3 => 'Très intéressée',
+         ),
+  );
+
+  //COMBOBOX
+  $form['appel_relance'] = array(
+  '#title' => 'Relance',
+  '#type' => 'select',
+  '#options' => array(
+         0 => 'Jamais',
+         1 => 'Dans plus d\'un an',
+         2 => 'D\'ici trois mois à un an',
+         3 => 'Dans moins de trois mois',
+         4 => 'Rapidement',
+         ),
+  );
+
+  $form['appel_courriel_envoye'] = array(
+  '#type' => 'checkbox',
+  '#title' => t('Courriel envoyé'),
+  );
+  
+  $form['appel_plaquette_envoye'] = array(
+  '#type' => 'checkbox',
+  '#title' => t('Plaquette envoyée'),
+  );
+  
+  $form['appel_rendez_vous_obtenu'] = array(
+  '#type' => 'checkbox',
+  '#title' => t('Rendez-vous obtenu'),
+  );
+  
+  //Création d'un champ date  
+  $format_date_rdv = 'Y-m-d';
+  $form['appel_date_rendez_vous'] = array(
+     '#type' => 'date_select', // types 'date_text' and 'date_timezone' are also supported. See .inc file.
+     '#title' => t('Date du rendez-vous'),
+     '#default_value' => $today_formaté,
+     '#date_format' => $format_date_rdv,
+     '#date_label_position' => 'within', // See other available attributes and what they do in date_api_elements.inc
+     '#date_timezone' => 'Europe/Paris',
+     '#date_year_range' => '0:+15',
+  );
+  
+   $form['appel_remarques'] = array(
+   '#title' => 'Remarques Complémentaires',
+   '#type' => 'textarea',
+   );
+  
+  
+  
+   
+  
+  
+//
+//Attribution des champs créés à leur fieldset
+//
+   
+
+////Attribution Fieldset Sélection_entreprise
+    $form['selection_entreprise']['selection_entreprise_liste'] = $form['selection_entreprise_liste'];
+    unset($form['selection_entreprise_liste']);
+   
+////Attributions Fieldset entreprise
+    $form['entreprise']['entreprise_nom'] = $form['entreprise_nom'];
+    unset($form['entreprise_nom']);
+
+    $form['entreprise']['entreprise_secteur'] = $form['entreprise_secteur'];
+    unset($form['entreprise_secteur']);
+
+    $form['entreprise']['entreprise_adress'] = $form['entreprise_adress'];
+    unset($form['entreprise_adress']);
+
+    $form['entreprise']['entreprise_cp'] = $form['entreprise_cp'];
+    unset($form['entreprise_cp']);
+
+    $form['entreprise']['entreprise_ville'] = $form['entreprise_ville'];
+    unset($form['entreprise_ville']);
+
+    $form['entreprise']['entreprise_telephone'] = $form['entreprise_telephone'];
+    unset($form['entreprise_telephone']);
+
+    $form['entreprise']['entreprise_fax'] = $form['entreprise_fax'];
+    unset($form['entreprise_fax']);
+
+    $form['entreprise']['entreprise_mail'] = $form['entreprise_mail'];
+    unset($form['entreprise_mail']);
+
+    
+    ////Attributions Fieldset contact
+    $form['contact']['contact_nom'] = $form['contact_nom'];
+    unset($form['contact_nom']);
+    
+    $form['contact']['contact_prenom'] = $form['contact_prenom'];
+    unset($form['contact_prenom']);
+    
+    $form['contact']['contact_fonction'] = $form['contact_fonction'];
+    unset($form['contact_fonction']);
+    
+    $form['contact']['contact_telephone'] = $form['contact_telephone'];
+    unset($form['contact_telephone']);
+    
+    $form['contact']['contact_portable'] = $form['contact_portable'];
+    unset($form['contact_portable']);
+    
+    $form['contact']['contact_mail'] = $form['contact_mail'];
+    unset($form['contact_mail']);
+        
+    
+    
+    
+    ////Attributions Fieldset appel
+       
+    $form['appel']['appel_date_appel'] = $form['appel_date_appel'];
+    unset($form['appel_date_appel']);
+    
+    $form['appel']['appel_appreciation'] = $form['appel_appreciation'];
+    unset($form['appel_appreciation']);
+    
+    $form['appel']['appel_relance'] = $form['appel_relance'];
+    unset($form['appel_relance']);
+    
+    $form['appel']['appel_courriel_envoye'] = $form['appel_courriel_envoye'];
+    unset($form['appel_courriel_envoye']);
+    
+    $form['appel']['appel_plaquette_envoye'] = $form['appel_plaquette_envoye'];
+    unset($form['appel_plaquette_envoye']);
+    
+    $form['appel']['appel_rendez_vous_obtenu'] = $form['appel_rendez_vous_obtenu'];
+    unset($form['appel_rendez_vous_obtenu']);
+    
+    $form['appel']['appel_date_rendez_vous'] = $form['appel_date_rendez_vous'];
+    unset($form['appel_date_rendez_vous']);
+    
+    $form['appel']['appel_remarques'] = $form['appel_remarques'];
+    unset($form['appel_remarques']);
+    
+
+
+$form['valider'] = array(
+'#type' => 'submit',
+'#value' => t('Soumettre'),
+'#weight' => 4,
+);
+
+return $form;
+}
+
+
+//
+////FONCTION DE SOUMISSION DES DONNEES
+//  
+
+    //Action générées après avoir appuyé sur le bouton submit
+    function bddprospection_form_submit($form, &$form_state){
+    $query_entreprise = db_insert('bddprospectionprog_entreprise');
+
+    $query_entreprise
+    ->fields(array(
+      'Nom'=>$form_state['values']['entreprise_nom'],
+      'Secteur_activite'=>$form_state['values']['entreprise_secteur'],
+      'Adresse'=>$form_state['values']['entreprise_adress'],
+      'Code_Postal'=>$form_state['values']['entreprise_cp'],
+      'Ville'=>$form_state['values']['entreprise_ville'],
+      'Telephone'=>$form_state['values']['entreprise_telephone'],
+      'Fax'=>$form_state['values']['entreprise_fax'],
+      'Mail'=>$form_state['values']['entreprise_mail'],
+      ))
+        
+    ->execute();
+    
+    $query_contact = db_insert('bddprospectionprog_contact');
+    $query_contact
+    ->fields(array(
+      'Entreprise'=>$form_state['values']['entreprise_nom'],
+      'Nom'=>$form_state['values']['contact_nom'],
+      'Prenom'=>$form_state['values']['contact_prenom'],
+      'Fonction'=>$form_state['values']['contact_fonction'],
+      'Telephone'=>$form_state['values']['contact_telephone'],
+      'Portable'=>$form_state['values']['contact_portable'],
+      'Mail'=>$form_state['values']['entreprise_mail'],
+      ))
+        
+    ->execute();
+    
+    $query_appel = db_insert('bddprospectionprog_appel');
+    $query_appel
+    ->fields(array(
+      'Date_appel'=>$form_state['values']['appel_date_appel'],
+      'Etudiant'=>$form_state['values']['10478'],                  /////RECUPERER LE # courant!
+      'Entreprise'=>$form_state['values']['entreprise_nom'],
+      'Contact'=>$form_state['values']['contact_nom'],
+      'Appreciation'=>$form_state['values']['appel_appreciation'],
+      'Relance'=>$form_state['values']['appel_relance'],
+      'Courriel_envoye'=>$form_state['values']['appel_courriel_envoye'],
+      'Plaquette_envoyee'=>$form_state['values']['appel_plaquette_envoye'],
+      'Rendez_vous_obtenu'=>$form_state['values']['appel_rendez_vous_obtenu'],
+      'Date_rendez_vous'=>$form_state['values']['appel_date_rendez_vous'],
+      'Remarques_complementaires'=>$form_state['values']['appel_remarques'],
+      'Rappele'=>'0',
+      ))
+
+    ->execute();
+    }
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//    function myform_form_submit($form, &$form_state) {
+//    if($form_state['clicked_button']['#value'] == $form_state['values']['submit_one'])	  //if button 1 is clicked
+//        $form_state['redirect'] = 'formulaire';	//redirect to whatever page you want
+//    else if($form_state['clicked_button']['#value'] == $form_state['values']['submit_two'])  //if button 2 is clicked
+//        $form_state['redirect'] = 'bddprospection/formulaire';
+//    }
+    
+    
+    
+
+    
+    
+    
+    
+
+//ENVOI DU FORMULAIRE
+//http://drupalfr.org/node/8337
+//function mon_formulaire_submit($form, &$form_state){
+//  variable_set(blablabla);
+//  drupal_set_message($form_state['values']['nom']);
+//  $form_state['redirect'] = 'node'; // on redirige l'utilisateur sur la page de notre choix !
+//}
+
+
+
+
+//function bddprospection_form_submit($form, &$form_state){
+//$query = db_insert('bddprospectionprog_entreprise');
+//
+//$query
+//->fields(array(
+//  'Nom'=>$form['nom'],
+//  'Secteur_activite'=>$form['secteur'],
+//  'Adresse'=>$form['adress'],
+//  'Code_Postal'=>$form['cp'],
+//  'Ville'=>$form['ville'],
+//  'Telephone'=>$form['telephone'],
+//  'Fax'=>$form['fax'],
+//  'Mail'=>$form['mail'],
+//  ))
+//    
+//->execute();
+//}
+
+
+//function bddprospection_form_submit($form, &$form_state){
+//
+//$query = db_select('bddprospectionprog_prospecteurs');
+// 
+//$query
+//->fields('bddprospectionprog_prospecteurs', array('Matricule_HEI','Nom', 'Prenom','Mandat','Classe','Telephone','Departement','Directeur_de_departement'))
+//->range(0, 50);
+// 
+//$result = $query->execute();
+//foreach ($result as $record) {
+//dpm($record);
+//}
+//}
+
+
+
+
+
+
+
+//Exemple de validation
+
+function form_example_tutorial_6_validate($form, &$form_state) {
+  $year_of_birth = $form_state['values']['year_of_birth'];
+  if ($year_of_birth && ($year_of_birth < 1900 || $year_of_birth > 2000)) {
+    form_set_error('year_of_birth', t('Enter a year between 1900 and 2000.'));
+  }
+}
+
+
+
+//Exemple de set message
+//drupal_set_message('La variable persistante est inchangée');
