@@ -13,6 +13,24 @@
 
 
 
+/**
+ * Implements hook_custom_theme().
+ * Hook appelé à chaque démarrage de Drupal, juste après l'activation du module, 
+ * et avant toute autre opération
+ * 
+ */
+
+//function bddprospection_custom_theme(){
+//  
+//  //Chargement du css customizé
+//  
+//}
+
+//(drupal_get_path('module', 'bddprospection')
+
+
+//drupal_add_css(drupal_get_path('module', 'bddprospection').'/css/bddprospection_maintheme.css', array
+//  ('group' => CSS_SYSTEM +9999, 'preprocess' => FALSE));
 
 
 
