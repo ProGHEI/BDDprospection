@@ -88,13 +88,10 @@ $items['bddprospection/menu_principal'] = array(
 
 $items['bddprospection/formulaire'] = array(
     'title' => 'AJOUTER UN NOUVEL APPEL',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('bddprospection_myform'),
-    'access callback' => TRUE,////RAJOUTER
-//'page callback' => 'bddprospection_myform',
+    'page callback' => 'bddprospection_myform',
     'access arguments' => array('access bddprospection'),
     'type' => MENU_CALLBACK,
-    'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
+    //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
   );
 
 
@@ -473,14 +470,22 @@ function bddprospection_form(){
   
   
  
-  //Création d'un champ date
+  //Création des champs appel
+ 
+   $form['appel_identifiant'] = array(
+  '#title' => 'Identifiants HEI',
+  '#type' => 'textfield',
+  '#description' => t('Ne pas mettre de "h" au début ! Exemple : 10478 ;P'),
+  );
+  
+  
   //Attention la variable date_par_default est utilisée pour tous les champs dates de la page ;P
   $today = getdate();
   $today_formaté = '$today[year]'.'-'.'$today[mon]'.'-'.'$today[mday]';
   
   $format_date_appel = 'Y-m-d';
   $form['appel_date_appel'] = array(
-     '#type' => 'date_select', // types 'date_text' and 'date_timezone' are also supported. See .inc file.
+     '#type' => 'date_text', // types 'date_select' and 'date_timezone' are also supported. See .inc file.
      '#title' => t('Sélectionner la date de l\'appel'),
      '#default_value' => $today_formaté, 
      '#date_format' => $format_date_appel,
@@ -532,7 +537,7 @@ function bddprospection_form(){
   //Création d'un champ date  
   $format_date_rdv = 'Y-m-d';
   $form['appel_date_rendez_vous'] = array(
-     '#type' => 'date_select', // types 'date_text' and 'date_timezone' are also supported. See .inc file.
+     '#type' => 'date_text', // types 'date_select' and 'date_timezone' are also supported. See .inc file.
      '#title' => t('Date du rendez-vous'),
      '#default_value' => $today_formaté,
      '#date_format' => $format_date_rdv,
@@ -587,6 +592,7 @@ function bddprospection_form(){
 
     
     ////Attributions Fieldset contact
+  
     $form['contact']['contact_nom'] = $form['contact_nom'];
     unset($form['contact_nom']);
     
@@ -608,8 +614,11 @@ function bddprospection_form(){
     
     
     
-    ////Attributions Fieldset appel
-       
+    //Attributions Fieldset appel
+      
+    $form['appel']['appel_identifiant']= $form['appel_identifiant'];
+    unset($form['appel_identifiant']);
+      
     $form['appel']['appel_date_appel'] = $form['appel_date_appel'];
     unset($form['appel_date_appel']);
     
@@ -667,6 +676,7 @@ return $form;
       ))
         
     ->execute();
+ 
     
     $query_contact = db_insert('bddprospectionprog_contact');
     $query_contact
@@ -686,7 +696,7 @@ return $form;
     $query_appel
     ->fields(array(
       'Date_appel'=>$form_state['values']['appel_date_appel'],
-      'Etudiant'=>$form_state['values']['10478'],                  /////RECUPERER LE # courant!
+      'Etudiant'=>$form_state['values']['appel_identifiant'],                   /////RECUPERER LE # courant! 
       'Entreprise'=>$form_state['values']['entreprise_nom'],
       'Contact'=>$form_state['values']['contact_nom'],
       'Appreciation'=>$form_state['values']['appel_appreciation'],
@@ -700,6 +710,7 @@ return $form;
       ))
 
     ->execute();
+    
     }
 
 
@@ -784,12 +795,12 @@ return $form;
 
 //Exemple de validation
 
-function form_example_tutorial_6_validate($form, &$form_state) {
-  $year_of_birth = $form_state['values']['year_of_birth'];
-  if ($year_of_birth && ($year_of_birth < 1900 || $year_of_birth > 2000)) {
-    form_set_error('year_of_birth', t('Enter a year between 1900 and 2000.'));
-  }
-}
+//function form_example_tutorial_6_validate($form, &$form_state) {
+//  $year_of_birth = $form_state['values']['year_of_birth'];
+//  if ($year_of_birth && ($year_of_birth < 1900 || $year_of_birth > 2000)) {
+//    form_set_error('year_of_birth', t('Enter a year between 1900 and 2000.'));
+//  }
+//}
 
 
 

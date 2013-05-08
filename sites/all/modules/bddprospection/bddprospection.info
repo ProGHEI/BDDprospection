@@ -7,7 +7,7 @@ core = 7.x
 ;script = 
 files[] = bddprospection.module
 ;configure = admin/config/services/aggregator/settings
-stylesheets[all][] = css/bddprospection_maintheme.css
+;stylesheets[all][] = css/bddprospection_maintheme.css
 ;dependencies[]= //ici doivent être déclarés les modules qui doivent être activés afin de garantir le fonctionnement du module
 ;package = "le nom du package" // permet de spécifier dans quel package de la page administration le module doit apparaître
 
