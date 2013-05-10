@@ -112,11 +112,11 @@ return $items;
 
 
 
-/*
+/**********************************
  * 
  ******  PAGE PRINCIPALE ******
  * 
-*/
+**********************************/
 
 function bddprospection_principal(){
 $content = drupal_get_form('bddprospection_principal_form');
@@ -499,10 +499,10 @@ function bddprospection_form(){
   '#title' => 'Appréciation',
   '#type' => 'select',
   '#options' => array(
-         0 => 'Pas de réponse',
-         1 => 'Pas intéressée',
-         2 => 'Intéressée',
-         3 => 'Très intéressée',
+         0 => t('Pas de réponse'),
+         1 => t('Pas intéressée'),
+         2 => t('Intéressée'),
+         3 => t('Très intéressée'),
          ),
   );
 
@@ -511,27 +511,39 @@ function bddprospection_form(){
   '#title' => 'Relance',
   '#type' => 'select',
   '#options' => array(
-         0 => 'Jamais',
-         1 => 'Dans plus d\'un an',
-         2 => 'D\'ici trois mois à un an',
-         3 => 'Dans moins de trois mois',
-         4 => 'Rapidement',
+         0 => t('Jamais'),
+         1 => t('Dans plus d\'un an'),
+         2 => t('D\'ici trois mois à un an'),
+         3 => t('Dans moins de trois mois'),
+         4 => t('Rapidement'),
          ),
   );
 
   $form['appel_courriel_envoye'] = array(
   '#type' => 'checkbox',
   '#title' => t('Courriel envoyé'),
+  '#options' => array(
+         0 => '0',
+         1 => '1',
+   ),
   );
   
   $form['appel_plaquette_envoye'] = array(
   '#type' => 'checkbox',
   '#title' => t('Plaquette envoyée'),
+  '#options' => array(
+         0 => '0',
+         1 => '1',
+   ),
   );
   
   $form['appel_rendez_vous_obtenu'] = array(
   '#type' => 'checkbox',
   '#title' => t('Rendez-vous obtenu'),
+  '#options' => array(
+         0 => '0',
+         1 => '1',
+   ),
   );
   
   //Création d'un champ date  
@@ -692,6 +704,37 @@ return $form;
         
     ->execute();
     
+    
+    //
+    
+    $appreciation="Pas de réponse";
+    switch($form_state['values']['appel_appreciation']){
+      case 1:
+         $appreciation="Pas intéressée";
+      case 2:
+         $appreciation="Intéressée";
+      case 3:
+         $appreciation="Très intéressée";
+    }
+    
+    $relance="Jamais";
+    switch($form_state['values']['appel_relance']){
+      case 0:
+         $relance="Jamais";
+      case 1:
+         $relance="Dans plus d\'un an";
+      case 2:
+         $relance="D\'ici trois mois à un an";
+      case 3:
+         $relance="Dans moins de trois mois";
+      case 4:
+         $relance="Rapidement";
+    }
+    
+    
+    
+    
+    
     $query_appel = db_insert('bddprospectionprog_appel');
     $query_appel
     ->fields(array(
@@ -699,13 +742,13 @@ return $form;
       'Etudiant'=>$form_state['values']['appel_identifiant'],                   /////RECUPERER LE # courant! 
       'Entreprise'=>$form_state['values']['entreprise_nom'],
       'Contact'=>$form_state['values']['contact_nom'],
-      'Appreciation'=>$form_state['values']['appel_appreciation'],
-      'Relance'=>$form_state['values']['appel_relance'],
+      'Appreciation'=>$appreciation,
+      'Relance'=>$relance,
       'Courriel_envoye'=>$form_state['values']['appel_courriel_envoye'],
       'Plaquette_envoyee'=>$form_state['values']['appel_plaquette_envoye'],
       'Rendez_vous_obtenu'=>$form_state['values']['appel_rendez_vous_obtenu'],
       'Date_rendez_vous'=>$form_state['values']['appel_date_rendez_vous'],
-      'Remarques_complementaires'=>$form_state['values']['appel_remarques'],
+      'Remarques_complementaires'=>$form_state['values']['appel_remarques'],    //// Limiter à 255 caractères
       'Rappele'=>'0',
       ))
 
