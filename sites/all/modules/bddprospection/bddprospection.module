@@ -94,6 +94,23 @@ $items['bddprospection/formulaire'] = array(
     //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
   );
 
+$items['bddprospection/liste_appel'] = array(
+    'title' => 'LISTE DES APPELS',
+    'page callback' => 'bddprospection_liste_appel_generale',
+    'access arguments' => array('access bddprospection'),
+    'type' => MENU_CALLBACK,
+    //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
+  );
+
+$items['bddprospection/test'] = array(
+    'title' => 'LISTE DES APPELS',
+    'page callback' => 'bddprospection_liste_appel_btp',
+    'access arguments' => array('access bddprospection'),
+    'type' => MENU_CALLBACK,
+    //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
+  );
+
+
 
 return $items;
 }
@@ -112,11 +129,11 @@ return $items;
 
 
 
-/**********************************
+/*******************************************************************************
  * 
- ******  PAGE PRINCIPALE ******
+ ****************************  PAGE PRINCIPALE *********************************
  * 
-**********************************/
+********************************************************************************/
 
 function bddprospection_principal(){
 $content = drupal_get_form('bddprospection_principal_form');
@@ -137,7 +154,7 @@ function bddprospection_principal_form(){
     $form['fieldset_ajout_appel']['boutton_ajout_appel'] = array (
         '#value' => t('Accéder au formulaire'),
         '#type' => 'submit',
-        '#submit' => array('bddprospection_action_ajouter_appel') /////JUSTE RAJOUTER
+        '#submit' => array('bddprospection_action_ajouter_appel') 
     );
 
   //FIELD LISTE APPEL
@@ -152,13 +169,13 @@ function bddprospection_principal_form(){
   $form['fieldset_liste_appels']['boutton_liste_appels_tous'] = array (
       '#value' => t('Accéder à la liste des appels'),
       '#type' => 'submit',
-      '#submit' => array('bddprospection_action_liste_appel')  /////JUSTE RAJOUTER
+      '#submit' => array('bddprospection_action_liste_appel')  /////EN COURS
   );
   
   $form['fieldset_liste_appels']['boutton_liste_appels_BTP_BAA'] = array (
       '#value' => t('Appels BTP - BAA'),
       '#type' => 'submit',
-      '#submit' => array('bddprospection_liste_appels_BTP_BAA')  /////JUSTE RAJOUTER
+      '#submit' => array('bddprospection_liste_appels_BTP_BAA')  /////EN COURS
   );
   
   $form['fieldset_liste_appels']['boutton_liste_appels_CM'] = array (
@@ -186,7 +203,7 @@ function bddprospection_principal_form(){
   );
   
   $form['fieldset_liste_appels']['boutton_liste_appels_INGENIERIE_GENERALE'] = array (
-      '#value' => t('Appels Ingénierie Génarale'),
+      '#value' => t('Appels Ingénierie Générale'),
       '#type' => 'submit',
       '#submit' => array('bddprospection_action_liste_appels_INGENIERIE_GENERALE')  /////JUSTE RAJOUTER
   );
@@ -257,32 +274,18 @@ function bddprospection_principal_form(){
       $form_state['redirect'] = 'bddprospection/formulaire';
     }
 
-    function bddprospection_action_liste_appel($form, &$form_state) {
-      $query = db_select('bddprospectionprog_appel')
-       ->fields('bddprospectionprog_appel', array(
-         'Numero_Appel',
-         'Date_appel',
-         'Etudiant',
-         'Entreprise',
-         'Contact',
-         'Appreciation',
-         'Relance',
-         'Courriel_envoye',
-         'Plaquette_envoyee',
-         'Rendez_vous_obtenu',
-         'Date_rendez_vous',
-         'Remarques_complementaires',
-         'Rappele'))
-       ->range(0, 500);
-                
-      $result = $query->execute();
-      foreach ($result as $record) {
-      dpm($record);
-      }
+     function bddprospection_action_liste_appel($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/liste_appel';
     }
     
+     function bddprospection_liste_appels_BTP_BAA($form, &$form_state){
+      $form_state['redirect'] = 'bddprospection/test';
+    }   
    
 
+    
+    
+    
     function bddprospection_action_reporting_appel_mois_dep($form, &$form_state) {
       // Perform the 2nd action
     }
@@ -309,14 +312,20 @@ function bddprospection_principal_form(){
 
 
 
+    
+    
+    
+    
+    
+    
 
 
 
-/*
+/*******************************************************************************
+ *
+ * *************************  PAGE AJOUT APPEL *********************************
  * 
- ******  PAGE AJOUT APPEL ******
- * 
-*/
+********************************************************************************/
 
 function bddprospection_myform(){
 $content = drupal_get_form('bddprospection_form');
@@ -375,17 +384,23 @@ function bddprospection_form(){
 
   ////Création des champs Entreprise 
   
-  //COMBOBOX
+  //COMBOBOX -> Entreprises existantes
+  $requete_select_selection_entreprise_existante = db_select('bddprospectionprog_entreprise');
+  $requete_select_selection_entreprise_existante->fields('bddprospectionprog_entreprise', array('Nom'));
+  $execute_selection_entreprise_existante = $requete_select_selection_entreprise_existante->execute();
+  $result_selection_entreprise_existante =  $execute_selection_entreprise_existante->fetchAll(PDO::FETCH_ASSOC);
+  
+  $Liste_entreprise_existante=array();
+  
+  foreach ($result_selection_entreprise_existante as $cle => $val){
+      $Liste_entreprise_existante[] = $val['Nom'];
+  }
+ 
+    
   $form['selection_entreprise_liste'] = array(
-  '#title' => 'Sélectionner une entreprise',
+  '#title' => 'Vérifier si l\'entreprise',
   '#type' => 'select',
-  '#options' => array(
-         0 => 'test1',
-         1 => 'test2',
-         2 => 'test3',
-         3 => 'test4',
-         4 => 'test5',
-         ),
+  '#options' => $Liste_entreprise_existante,
   );  
     
 ////Création des champs Entreprise
@@ -757,6 +772,116 @@ return $form;
     }
 
 
+    
+    
+    
+    
+    
+/*******************************************************************************
+ *
+ * *************************  PAGE LISTE APPEL *********************************
+ * 
+********************************************************************************/
+    
+    
+    
+function bddprospection_liste_appel_generale(){
+  
+$query = db_select('drupal','bddprospectionprog_appel');
+$query->join('bddprospectionprog_entreprise','Telephone','bddprospectionprog_appel.Entreprise=bddprospectionprog_entreprise.Nom');
+$query->join('bddprospectionprog_entreprise','Mail','bddprospectionprog_appel.Entreprise=bddprospectionprog_entreprise.Nom');
+$query->join('bddprospectionprog_contact','Fonction','bddprospectionprog_appel.Entreprise=bddprospectionprog_contact.Entreprise');
+$query->join('bddprospectionprog_contact','Portable','bddprospectionprog_appel.Entreprise=bddprospectionprog_contact.Entreprise');
+$query->join('bddprospectionprog_contact','Mail','bddprospectionprog_appel.Entreprise=bddprospectionprog_contact.Entreprise');
+$query->join('bddprospectionprog_prospecteur','Nom','bddprospectionprog_appel.Etudiant=bddprospectionprog_prospecteur.Matricule_HEI');
+$query->join('bddprospectionprog_prospecteur','Departement','bddprospectionprog_appel.Etudiant=bddprospectionprog_prospecteur.Matricule_HEI');
+
+
+$query->fields('bddprospectionprog_appel', array(
+  'Date_appel',
+  'Entreprise'
+  ))
+  
+    ->field('bddprospectionprog_entreprise',array(
+     'Telephone',
+     'Mail',
+    ))
+    
+    -> field('bddprospectionprog_appel', array(
+     'Contact',
+    ))
+  
+    ->field('bddprospectionprog_contact',array(
+     'Fonction',
+     'Portable',
+    ))
+    
+    ->field('bddprospectionprog_prospecteur',array(
+      'Nom',
+      'Departement',
+    ))
+    
+    ->fields('bddprospectionprog_appel', array(
+      'Appreciation',
+      'Relance'
+    ))
+ 
+    ->field('bddprospectionprog_contact',array(
+     'Mail',
+    ));                  
+
+ 
+$result = $query->execute();
+foreach ($result as $record) {
+dpm($record);
+}
+  
+  
+  
+}
+    
+    
+    
+    
+    
+/*******************************************************************************
+ *
+ * **********************  PAGE LISTE APPEL BTP ********************************
+ * 
+********************************************************************************/
+  
+    
+    
+    function bddprospection_liste_appel_btp(){
+      
+//      function bddprospection_form_submit($form, &$form_state){
+//
+//$query = db_select('bddprospectionprog_prospecteurs');
+// 
+//$query
+//->fields('bddprospectionprog_prospecteurs', array('Matricule_HEI','Nom', 'Prenom','Mandat','Classe','Telephone','Departement','Directeur_de_departement'))
+//->range(0, 50);
+// 
+//$result = $query->execute();
+//foreach ($result as $record) {
+//dpm($record);
+//}
+//}
+      
+      
+      
+    $output="Bonjour Maman";
+    return $output;
+    }    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
