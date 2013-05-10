@@ -129,6 +129,11 @@ return $items;
 
 
 
+
+
+
+
+
 /*******************************************************************************
  * 
  ****************************  PAGE PRINCIPALE *********************************
@@ -157,6 +162,10 @@ function bddprospection_principal_form(){
         '#submit' => array('bddprospection_action_ajouter_appel') 
     );
 
+    
+    
+    
+    
   //FIELD LISTE APPEL
   $form['fieldset_liste_appels'] = array (
       '#type' => 'fieldset',
@@ -255,12 +264,69 @@ function bddprospection_principal_form(){
       '#collapsed' => FALSE,
   );
    
-   $form['fieldset_rappel']['boutton1'] = array (
-      '#value' => t('BOUTONS A DEFINIR'),
+   $form['fieldset_rappel']['boutton_rappel'] = array (
+      '#value' => t('Consulter les rappels'),
       '#type' => 'submit',
-      '#submit' => array('bddprospection_action_A_DEFINIR')  /////JUSTE RAJOUTER
+      '#submit' => array('bddprospection_action_rappel')  /////JUSTE RAJOUTER
   );
      
+   
+   //FIELD ADMINISTRER BDD
+    $form['fieldset_admin_bdd'] = array (
+        '#type' => 'fieldset',
+        '#title' => 'Administrer la BDD',
+        '#weight' => 4, 
+        '#collapsible' => TRUE, 
+        '#collapsed' => FALSE,
+    ); 
+   
+    $form['fieldset_admin_bdd']['boutton_administrer_appels'] = array (
+      '#value' => t('Gérer les appels'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_administrer_appels')  /////JUSTE RAJOUTER
+    );
+    
+    $form['fieldset_admin_bdd']['boutton_administrer_prospecteurs'] = array (
+      '#value' => t('Gérer les prospecteurs'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_administrer_prospecteurs')  /////JUSTE RAJOUTER
+    );
+    
+    $form['fieldset_admin_bdd']['boutton_administrer_entreprises'] = array (
+      '#value' => t('Gérer les entreprises'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_action_administrer_entreprises')  /////JUSTE RAJOUTER
+    );
+    
+    $form['fieldset_admin_bdd']['boutton_administrer_contact'] = array (
+      '#value' => t('Gérer les contacts'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_administrer_contact')  /////JUSTE RAJOUTER
+    );
+    
+    $form['fieldset_admin_bdd']['boutton_administrer_rappel'] = array (
+      '#value' => t('Gérer les rappels'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_administrer_rappel')  /////JUSTE RAJOUTER
+    );
+    
+    
+    
+    //FIELD ARCHIVES
+    $form['fieldset_archives'] = array (
+        '#type' => 'fieldset',
+        '#title' => 'Consulter les  archives',
+        '#weight' => 5, 
+        '#collapsible' => TRUE, 
+        '#collapsed' => FALSE,
+    ); 
+    
+     $form['fieldset_archives']['boutton_consulter_archives'] = array (
+      '#value' => t('Consulter les archives'),
+      '#type' => 'submit',
+      '#submit' => array('bddprospection_consulter_archives')  /////JUSTE RAJOUTER
+    );
+    
     return $form;
 }
 
@@ -312,6 +378,12 @@ function bddprospection_principal_form(){
 
 
 
+    
+    
+    
+    
+    
+    
     
     
     
@@ -777,6 +849,17 @@ return $form;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 /*******************************************************************************
  *
  * *************************  PAGE LISTE APPEL *********************************
@@ -842,6 +925,28 @@ dpm($record);
     
     
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
 /*******************************************************************************
@@ -869,9 +974,7 @@ dpm($record);
 //}
       
       
-      
-    $output="Bonjour Maman";
-    return $output;
+  
     }    
     
     

@@ -13,6 +13,24 @@
 
 
 
+/**
+ * Implements hook_custom_theme().
+ * Hook appelé à chaque démarrage de Drupal, juste après l'activation du module, 
+ * et avant toute autre opération
+ * 
+ */
+
+//function testwill_custom_theme(){
+//  
+//  //Chargement du css customizé
+//  
+//}
+
+//(drupal_get_path('module', 'testwill')
+
+
+//drupal_add_css(drupal_get_path('module', 'testwill').'/css/testwill_maintheme.css', array
+//  ('group' => CSS_SYSTEM +9999, 'preprocess' => FALSE));
 
 
 
@@ -21,10 +39,33 @@
  */
 function testwill_permission(){
   return array(
-    'access bddprospection' => array('title' => t('Access bddprospection'))
+    'access testwill' => array('title' => t('Access testwill'))
 );
 }
 
+
+/**
+ * Implements hook_block_info().
+ */
+//Ici on explique à Drupal les différents blocs que l'on va créer
+
+
+//function testwill_block_info() {
+//  $blocks['current_posts'] = array(
+//    'info' => t('Current posts'), //The name that will appear in the block list.
+//    'cache' => DRUPAL_CACHE_PER_ROLE, //Default
+//  );
+//  return $blocks;
+//}
+
+
+
+
+////LE MODULE DEPLOIE UN BLOC  -> ex: menu... sur le côté de la page
+// function testwill_block(){
+//   
+//   
+// }
 
 
 
@@ -36,15 +77,18 @@ function testwill_permission(){
 function testwill_menu() {
 $items = array();
 
-$items['testwill/principal'] = array(
-  'title' => 'MENU PRINCIPAL',
-  'page callback' => 'drupal_get_form',
-  'page arguments' => array('testwill_form_principal'),
-  'access arguments' => array('access bddprospection'),
-  'type' => MENU_CALLBACK,
-  //'file' => 'bddprospection_menu_principal.inc',
-);
 
+
+$items['testwill/formulaire'] = array(
+    'title' => 'TEST',
+    'page callback' => 'projects_list',
+    //'page arguments' => array('testwill_myform'),
+    //'access callback' => TRUE,////RAJOUTER
+//'page callback' => 'testwill_myform',
+    'access arguments' => array('access testwill'),
+    'type' => MENU_CALLBACK,
+    //'file' => 'testwill_menu_principal.inc',////RAJOUTER
+  );
 
 
 return $items;
@@ -52,54 +96,320 @@ return $items;
 
 
 
-function testwill_principal(){
-$content = drupal_get_form('testwill_principal_form');
-return $content;
-}
 
-function testwill_principal_form(){
 
-//Création de fieldset 
-  
-      // Cadre MenuPrincipal autour des champs
-       $form['menu_principal_fieldset'] = array(
 
-         '#type' => 'fieldset', 
-         '#title' => t('MENU PRINCIPAL'), 
-         '#weight' => 0, 
-         '#collapsible' => TRUE, 
-         '#collapsed' => FALSE,
-         );  
-  
-  
-$form['bouton_ajouter_un_appel'] = array(
-    '#type' => 'submit',
-    '#value' => t('Ajouter un appel'),
-    '#submit' => array('testwill_submit'),
+//require_once 'common.inc';
+
+/**
+ * The "List Projects" table
+ * ----------------------------------------------------------------------
+ * 
+ * got helpful drupal 7 table sort info from http://nanwich.com/node/335
+ * 
+ */
+function projects_list() {
+
+  # configure the table header columns
+  $header = array(
+    array('data' => 'Matricule',        'field' => 'Matricule_HEI',               'sort' => 'ASC'),
+    array('data' => 'Nom',              'field' => 'Nom',                         'sort' => 'ASC'),
+    array('data' => 'Prenom',           'field' => 'Prenom',                      'sort' => 'ASC'),
+    array('data' => 'Mandat',           'field' => 'Mandat',                      'sort' => 'ASC'),
+    array('data' => 'Classe',           'field' => 'Classe',                      'sort' => 'ASC'),
+    array('data' => 'Telephone',        'field' => 'Telephone',                   'sort' => 'ASC'),
+    array('data' => 'Departement',      'field' => 'Departement',                 'sort' => 'ASC'),
+    array('data' => 'Responsable',      'field' => 'Directeur_de_departement',    'sort' => 'ASC'),
+ 
   );
 
+  # set the database table and initial SelectQuery options
+  # $select is a SelectQuery object.
+  # @see http://api.drupal.org/api/drupal/includes--database--select.inc/class/Se...
+  $select = db_select('bddprospectionprog_prospecteurs','p')
+              ->extend('PagerDefault')
+              ->extend('TableSort');
 
+  # get the desired fields
+  # orderByHeader is a TableSort method (http://api.drupal.org/api/drupal/includes--tablesort.inc/function/TableS...)
+  $select->fields('p', array('Matricule_HEI', 'Nom', 'Prenom', 'Mandat', 'Classe','Telephone','Departement','Directeur_de_departement'))
+         ->limit(20)
+         ->orderByHeader($header)
+         ->orderBy('Matricule_HEI', 'DESC');  # TODO this call seems to be losing to orderByHeader on page load
 
+  # execute the query
+  $results = $select->execute();
 
-////Attribution Fieldset Sélection_entreprise
-    $form['menu_principal_fieldset']['bouton_ajouter_un_appel'] = $form['bouton_ajouter_un_appel'];
-    unset($form['bouton_ajouter_un_appel']);
-    
-  return $form;  
+  # configure the table rows, making the first column a link to our 'edit' page
+  $rows = array();
+  foreach ($results as $row) {
+    $rows[] = array("<a href=\"/projects/edit/" . $row->Matricule_HEI . "\">" . $row->Matricule_HEI . '</a>',
+                    $row->Nom,
+                    $row->Prenom,
+                    $row->Mandat,
+                    $row->Classe,
+                    $row->Telephone,
+                    $row->Departement,
+                    $row->Directeur_de_departement,
+    );
+  }
+
+  $output = theme('table', array('header' => $header,
+                                 'rows' => $rows ));
+
+  # add the pager
+  $output .= theme('pager');
+
+  return $output;
+
 }
 
 
 
- function testwill_submit($form, &$form_state){
-    $form_state['redirect']='bddprospection/formulaire';
-    $form_state['rebuild'] = TRUE;
- }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+/*
+ * 
+ ******  PAGE PRINCIPALE ******
+ * 
+*/
+
+
+
+
+
+
+
+
+
+/*
+ * 
+ ******  PAGE AJOUT APPEL ******
+ * 
+*/
+
+
+//CREATION DU FORMULAIRE AJOUTER UN APPEL
+
+//function testwill_essai(){
+//
+//  $header = array(
+//		array('data' => t('Matricule'), 'field' => 'bddprospectionprog_prospecteurs.Matricule_HEI'),
+//		array('data' => t('Nom'), 'field' => 'bddprospectionprog_prospecteurs.Nom'),
+//    array('data' => t('Prenom'), 'field' => 'bddprospectionprog_prospecteurs.Prenom'),
+//    array('data' => t('Mandat'), 'field' => 'bddprospectionprog_prospecteurs.Mandat'),
+//    array('data' => t('Classe'), 'field' => 'bddprospectionprog_prospecteurs.Classe'),
+//    array('data' => t('Telephone'), 'field' => 'bddprospectionprog_prospecteurs.Telephone'),
+//    array('data' => t('Departement'), 'field' => 'bddprospectionprog_prospecteurs.Departement'),
+//    array('data' => t('Responsable'), 'field' => 'bddprospectionprog_prospecteurs.Directeur_de_departement'),
+// 	);
+//	
+//	$sql = "SELECT bddprospectionprog_prospecteurs.Matricule_HEI, count(*) FROM {bddprospectionprog_prospecteurs} GROUP BY bddprospectionprog_prospecteurs.Matricule_HEI";
+//	$sqlCount = "SELECT count(*) FROM (SELECT * FROM {bddprospectionprog_prospecteurs} GROUP BY bddprospectionprog_prospecteurs.Matricule_HEI) as foo";
+//	$sql .= tablesort_sql($header);
+//	
+//	$limit = 10; // Nombre d'éléments par page
+//	$result = pager_query($sql, $limit, NULL, $sqlCount);
+//	while ($execution = db_fetch_object($result)) {
+//		$rows[] = array(
+//			'data' => array(
+//				array('data' => $execution->Matricule_HEI),
+//				array('data' => $execution->Nom),
+//				array('data' => $execution->Prenom),
+//				array('data' => $execution->Mandat),
+//				array('data' => $execution->Classe),
+//				array('data' => $execution->Telephone),
+//				array('data' => $execution->Departement),
+//				array('data' => $execution->Directeur_de_departement),
+//        
+//				//array('data' => date('d-m-Y'), $blog->created)
+//			),
+//			'Matricule_HEI' => 'blog-'. $execution->Matricule_HEI,
+//		);
+//	}
+//	
+//	$html = theme('table', $header, $rows);
+//	$html .= theme('pager', NULL, $limit);
+//	
+//	return $html;
+//}
+//  
+  
+
+
+//
+////FONCTION DE SOUMISSION DES DONNEES
+//  
+
+    //Action générées après avoir appuyé sur le bouton submit
+//    function testwill_form_submit($form, &$form_state){
+//  
+//       //FORMULAIRE POUR AFFICHER DONNEES TABLEAU
+//
+//$table = 'table';
+//
+//$header = array(
+//    'header' => array(
+//      'Matricule',
+//      'Nom',
+//      'Prenom',
+//      'Mandat',
+//      'Classe',
+//      'Telephone',
+//      'Département',
+//      'Responsable',
+//    ));      
+//
+//$rows = db_select('bddprospectionprog_prospecteurs')
+//        ->fields('bddprospectionprog_prospecteurs', array(
+//          'Matricule_HEI', 
+//          'Nom',
+//          'Prenom',
+//          'Mandat',
+//          'Classe',
+//          'Telephone',
+//          'Departement',
+//          'Directeur_de_departement',
+//          ));
+//
+//$Tableau=theme($table, $header, $rows->execute()->fetchAll(PDO::FETCH_ASSOC));      
+//      
+// 
+//
+//
+//
+//
+//
+//print $Tableau;
+//
+//$variable1 = theme($table,$header,$rows);
+//$form2 = drupal_render($variable1);  // variable utilisée pour répondre à l'erreur "Strict warning: Only variables should be passed by reference in testwill_form_submit() (line 199 of C:\Users\PROJET\Desktop\PROJET D'ETUDE\INSTALLATION DRUPAL\EN COURS\drupal\sites\all\modules\testwill\testwill.module).
+//
+//$form2 .= drupal_render($form);
+//
+//return $form2;
+//      
+//      
+//      
+//      
+//  
+//}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+// 
+// 
+//$query2 = db_select('bddprospectionprog_prospecteurs');
+// 
+//$query2
+//->fields('bddprospectionprog_prospecteurs', array(
+//  'Matricule_HEI',
+//  'Nom', 
+//  'Prenom',
+//  'Mandat',
+//  'Classe',
+//  'Telephone',
+//  'Departement',
+//  'Directeur_de_departement'));
+// 
+//$execute = $query2->execute();
+//
+//$result = $execute->fetchAllAssoc(PDO::FETCH_ASSOC);
+//
+//
+// 
+// //foreach ($result as $resultat => $valeur){
+//  
+//   return $donnees;
+// 
+// 
+//}
+
+
+
+//AFFICHAGE DANS UN TABLEAU
+//$form = array();
+//$table_headers = array();
+//$table_rows = array();
+//$data = db_query("a query to get the whole dataset");
+//while ($row = db_fetch_object($data)) {
+//    $table_rows[] = $row->some attribute;
+//}
+//
+//$form['report'] = array('#value' => theme('table', $table_headers, $table_rows);
+//return $form;
+
+
+
+
+
+
+
+
+
+// AFFICHAGE LIGNES DRUPAL 6
+//$sql = 'SELECT title,url FROM {links}';  // Add more fields here or use * for all
+//$results = db_query($sql); // Run the query
+//while ($fields = db_fetch_array($results)) { // Get the next result as an associative array
+//  echo "<pre>"; // Wrap each record in a pre tag for clarity
+//  foreach($fields as $key => $value) { // Iterate over all of the fields in this row
+//    echo "$key = $value\n";
+//  }
+//  echo "</pre>";
+//}
+
+
+
+
+
+
+
+
+//"<TABLE>";
+//foreach ($result as $record) {
+//  
+//    
+//    return("<tr>"."<td>".$record->Matricule_HEI."</td>".
+//        "<td>".$record->Nom."</td>".
+//        "<td>".$record->Prenom."</td>".
+//        "<td>".$record->Mandat."</td>".
+//        "<td>".$record->Classe."</td>".
+//        "<td>".$record->Telephone."</td>".
+//        "<td>".$record->Departement."</td>".
+//        "<td>".$record->Directeur_de_departement."</td>".
+//        "</tr>");
+//  
+//  //var_dump($result->context);
+//
+//}
+//"</TABLE>";
+//}
+
+//$structured_results = $results -&gt; fetchAllAssoc("uid");
+
     
     
     
