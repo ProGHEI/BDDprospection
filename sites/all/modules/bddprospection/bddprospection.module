@@ -54,11 +54,11 @@ $module_path=drupal_get_path('module', 'bddprospection');
 /**
  * Implements hook_permission().
  */
-function bddprospection_permission(){
-  return array(
-    'access bddprospection' => array('title' => t('Access bddprospection'))
-);
-}
+      function bddprospection_permission(){
+        return array(
+          'access bddprospection' => array('title' => t('Access bddprospection'))
+      );
+      }
 
 
 /**
@@ -86,122 +86,312 @@ function bddprospection_permission(){
 
 
 
- // DECLARER L'ADRESSE DES PAGES CONCERNEES PAR LE MODULE 
- // http://www.kolossaldrupal.org/docs/informer-drupal-de-lexistence-de-cette-nouvelle-fonction
-/**
- * Implements hook_menu(). 
- */
-function bddprospection_menu() {
-$items = array();
+      // DECLARER L'ADRESSE DES PAGES CONCERNEES PAR LE MODULE 
+      // http://www.kolossaldrupal.org/docs/informer-drupal-de-lexistence-de-cette-nouvelle-fonction
+     /**
+      * Implements hook_menu(). 
+      */
+     function bddprospection_menu() {
+     $items = array();
 
-$items['bddprospection/menu_principal'] = array(
-  'title' => 'MENU PRINCIPAL',
-  'page callback' => 'drupal_get_form',
-  'page arguments' => array('bddprospection_principal'),
-  'access arguments' => array('access bddprospection'),
-  'type' => MENU_CALLBACK,
-  //'file' => 'bddprospection_menu_principal.inc',
-);
+     $items['bddprospection/menu_principal'] = array(
+       'title' => 'MENU PRINCIPAL',
+       'page callback' => 'drupal_get_form',
+       'page arguments' => array('bddprospection_principal'),
+       'access arguments' => array('access bddprospection'),
+       'type' => MENU_CALLBACK,
+       //'file' => 'bddprospection_menu_principal.inc',
+     );
 
-$items['bddprospection/formulaire'] = array(
-    'title' => 'AJOUTER UN NOUVEL APPEL',
-    'page callback' => 'bddprospection_myform',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-    //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
-  );
-
-
-
-$items['bddprospection/test'] = array(
-    'title' => 'LISTE DES APPELS',
-    'page callback' => 'bddprospection_liste_appel_btp',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-    //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
-  );
+     $items['bddprospection/formulaire'] = array(
+         'title' => 'AJOUTER UN NOUVEL APPEL',
+         'page callback' => 'bddprospection_myform',
+         'access arguments' => array('access bddprospection'),
+         'type' => MENU_CALLBACK,
+         //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
+       );
 
 
 
-$items['bddprospection/gerer_prospecteurs'] = array(
-    'title' => t('Gérer les prospecteurs'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('bddprospection_gerer_prospecteurs'),
-    //'page callback' => 'bddprospection_gerer_prospecteurs',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
-
-$items['bddprospection/consulter_prospecteurs'] = array(
-    'title' => t('Consulter les prospecteurs'),
-    'page callback' => 'bddprospection_consulter_prospecteurs',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
-
-$items['bddprospection/ajout_prospecteurs'] = array(
-    'title' => t('Ajouter un prospecteur'),
-    'page callback' => 'bddprospection_ajouter_prospecteurs',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
-
-$items['bddprospection/maj_prospecteurs'] = array(
-    'title' => t('Mettre à jour les données du prospecteur'),
-    'page callback' => 'bddprospection_mettre_a_jour_prospecteurs',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
-
-$items['bddprospection/supprimer_prospecteurs'] = array(
-    'title' => t('Supprimer un prospecteur'),
-    'page callback' => 'bddprospection_mettre_a_jour_prospecteurs',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
+     $items['bddprospection/test'] = array(
+         'title' => 'LISTE DES APPELS',
+         'page callback' => 'bddprospection_liste_appel_btp',
+         'access arguments' => array('access bddprospection'),
+         'type' => MENU_CALLBACK,
+         //'file' => 'bddprospection_menu_principal.inc',////RAJOUTER
+       );
 
 
 
+      /*
+       * GERER APPELS
+       */
+
+      $items['bddprospection/gerer_appels'] = array(
+          'title' => t('Gérer les appels'),
+          'page callback' => 'drupal_get_form',
+          'page arguments' => array('bddprospection_gerer_appels'),
+          //'page callback' => 'bddprospection_gerer_prospecteurs',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+      $items['bddprospection/consulter_appels'] = array(
+          'title' => t('Consulter les appels'),
+          'page callback' => 'bddprospection_consulter_appels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/ajout_appels'] = array(
+          'title' => t('Ajouter un appel'),
+          'page callback' => 'bddprospection_ajouter_appels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/maj_appels'] = array(
+          'title' => t('Mettre à jour les données d\'un appel'),
+          'page callback' => 'bddprospection_mettre_a_jour_appels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/supprimer_appels'] = array(
+          'title' => t('Supprimer un appel'),
+          'page callback' => 'bddprospection_supprimer_appels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
 
 
 
 
-$items['bddprospection/gerer_entreprises'] = array(
-    'title' => t('Gérer les entreprises'),
-    'page callback' => 'bddprospection_gerer_entreprises',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
 
-$items['bddprospection/gerer_contacts'] = array(
-    'title' => t('Gérer les contacts'),
-    'page callback' => 'bddprospection_gerer_contacts',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
 
-$items['bddprospection/gerer_rappels'] = array(
-    'title' => t('Gérer les rappels'),
-    'page callback' => 'bddprospection_gerer_rappels',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
 
-$items['bddprospection/gerer_appels'] = array(
-    'title' => t('Gérer les appels'),
-    'page callback' => 'bddprospection_gerer_appels',
-    'access arguments' => array('access bddprospection'),
-    'type' => MENU_CALLBACK,
-   
-  );
+
+      /*
+       * GERER PROSPECTEURS
+       */
+
+      $items['bddprospection/gerer_prospecteurs'] = array(
+          'title' => t('Gérer les prospecteurs'),
+          'page callback' => 'drupal_get_form',
+          'page arguments' => array('bddprospection_gerer_prospecteurs'),
+          //'page callback' => 'bddprospection_gerer_prospecteurs',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/consulter_prospecteurs'] = array(
+          'title' => t('Consulter les prospecteurs'),
+          'page callback' => 'bddprospection_consulter_prospecteurs',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/ajout_prospecteurs'] = array(
+          'title' => t('Ajouter un prospecteur'),
+          'page callback' => 'bddprospection_ajouter_prospecteurs',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/maj_prospecteurs'] = array(
+          'title' => t('Mettre à jour les données du prospecteur'),
+          'page callback' => 'bddprospection_mettre_a_jour_prospecteurs',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/supprimer_prospecteurs'] = array(
+          'title' => t('Supprimer un prospecteur'),
+          'page callback' => 'bddprospection_supprimer_prospecteurs',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+
+
+
+
+
+
+      /*
+       * GERER ENTREPRISES
+       */
+
+      $items['bddprospection/gerer_entreprises'] = array(
+          'title' => t('Gérer les entreprises'),
+          'page callback' => 'drupal_get_form',
+          'page arguments' => array('bddprospection_gerer_entreprises'),
+          //'page callback' => 'bddprospection_gerer_prospecteurs',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+      $items['bddprospection/consulter_entreprises'] = array(
+          'title' => t('Consulter les entreprises'),
+          'page callback' => 'bddprospection_consulter_entreprises',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/ajout_entreprises'] = array(
+          'title' => t('Ajouter une entreprise'),
+          'page callback' => 'bddprospection_ajouter_entreprises',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/maj_entreprises'] = array(
+          'title' => t('Mettre à jour les données d\'une entreprise'),
+          'page callback' => 'bddprospection_mettre_a_jour_entreprises',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/supprimer_entreprises'] = array(
+          'title' => t('Supprimer une entreprise'),
+          'page callback' => 'bddprospection_supprimer_entreprises',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+
+
+
+
+
+      /*
+       * GERER CONTACTS
+       */
+
+      $items['bddprospection/gerer_contacts'] = array(
+          'title' => t('Gérer les contacts'),
+          'page callback' => 'drupal_get_form',
+          'page arguments' => array('bddprospection_gerer_contacts'),
+          //'page callback' => 'bddprospection_gerer_contacts',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+      $items['bddprospection/consulter_contacts'] = array(
+          'title' => t('Consulter les contacts'),
+          'page callback' => 'bddprospection_consulter_contacts',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/ajout_contacts'] = array(
+          'title' => t('Ajouter un contact'),
+          'page callback' => 'bddprospection_ajouter_contacts',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/maj_contacts'] = array(
+          'title' => t('Mettre à jour les données d\'un contacts'),
+          'page callback' => 'bddprospection_mettre_a_jour_contacts',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/supprimer_contacts'] = array(
+          'title' => t('Supprimer un contact'),
+          'page callback' => 'bddprospection_supprimer_contacts',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+
+
+
+      /*
+       * GERER RAPPELS
+       */
+
+      $items['bddprospection/gerer_rappels'] = array(
+          'title' => t('Gérer les rappels'),
+          'page callback' => 'drupal_get_form',
+          'page arguments' => array('bddprospection_gerer_rappels'),
+          //'page callback' => 'bddprospection_gerer_contacts',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+      $items['bddprospection/consulter_rappels'] = array(
+          'title' => t('Consulter les rappels'),
+          'page callback' => 'bddprospection_consulter_rappels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/ajout_rappels'] = array(
+          'title' => t('Ajouter un rappel'),
+          'page callback' => 'bddprospection_ajouter_rappels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/maj_rappels'] = array(
+          'title' => t('Mettre à jour les données d\'un rappel'),
+          'page callback' => 'bddprospection_mettre_a_jour_rappels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+      $items['bddprospection/supprimer_rappels'] = array(
+          'title' => t('Supprimer un rappel'),
+          'page callback' => 'bddprospection_supprimer_rappels',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
+
+
+
+
+      //CONSULTER LES ARCHIVES
+        $items['bddprospection/consulter_archives'] = array(
+          'title' => t('Consulter les archives'),
+          'page callback' => 'bddprospection_consulter_archives',
+          'access arguments' => array('access bddprospection'),
+          'type' => MENU_CALLBACK,
+
+        );
 
 
 return $items;
@@ -392,16 +582,16 @@ function bddprospection_principal_form(){
       '#submit' => array('bddprospection_action_administrer_entreprises')  /////JUSTE RAJOUTER
     );
     
-    $form['fieldset_admin_bdd']['boutton_administrer_contact'] = array (
+    $form['fieldset_admin_bdd']['boutton_administrer_contacts'] = array (
       '#value' => t('Gérer les contacts'),
       '#type' => 'submit',
-      '#submit' => array('bddprospection_administrer_contact')  /////JUSTE RAJOUTER
+      '#submit' => array('bddprospection_action_administrer_contacts')  /////JUSTE RAJOUTER
     );
     
-    $form['fieldset_admin_bdd']['boutton_administrer_rappel'] = array (
+    $form['fieldset_admin_bdd']['boutton_administrer_rappels'] = array (
       '#value' => t('Gérer les rappels'),
       '#type' => 'submit',
-      '#submit' => array('bddprospection_administrer_rappel')  /////JUSTE RAJOUTER
+      '#submit' => array('bddprospection_action_administrer_rappels')  /////JUSTE RAJOUTER
     );
     
     
@@ -418,7 +608,7 @@ function bddprospection_principal_form(){
      $form['fieldset_archives']['boutton_consulter_archives'] = array (
       '#value' => t('Consulter les archives'),
       '#type' => 'submit',
-      '#submit' => array('bddprospection_consulter_archives')  /////JUSTE RAJOUTER
+      '#submit' => array('bddprospection_action_consulter_archives')  /////JUSTE RAJOUTER
     );
     
     return $form;
@@ -467,8 +657,34 @@ function bddprospection_principal_form(){
     
     
     
+    function bddprospection_action_administrer_appels($form, &$form_state) {
+       $form_state['redirect'] = 'bddprospection/gerer_appels';
+    }
+    
     function bddprospection_action_administrer_prospecteurs($form, &$form_state) {
        $form_state['redirect'] = 'bddprospection/gerer_prospecteurs';
+    }
+    
+    function bddprospection_action_administrer_entreprises($form, &$form_state) {
+       $form_state['redirect'] = 'bddprospection/gerer_entreprises';
+    }
+    
+    function bddprospection_action_administrer_contacts($form, &$form_state) {
+       $form_state['redirect'] = 'bddprospection/gerer_contacts';
+    }
+    
+    function bddprospection_action_administrer_rappels($form, &$form_state) {
+       $form_state['redirect'] = 'bddprospection/gerer_rappels';
+    }
+
+    
+    
+    
+    
+    
+    
+    function bddprospection_action_consulter_archives($form, &$form_state) {
+       $form_state['redirect'] = 'bddprospection/consulter_archives';
     }
 
 
@@ -890,7 +1106,7 @@ return $form;
       'Fonction'=>$form_state['values']['contact_fonction'],
       'Telephone'=>$form_state['values']['contact_telephone'],
       'Portable'=>$form_state['values']['contact_portable'],
-      'Mail'=>$form_state['values']['entreprise_mail'],
+      'Mail'=>$form_state['values']['contact_mail'],
       ))
         
     ->execute();
@@ -1092,6 +1308,562 @@ dpm($record);
     
     
     
+   
+    
+/*******************************************************************************
+ *
+ * ***********  PAGE ADMINISTRER BDD / GERER APPELS ****************************
+ * 
+********************************************************************************/
+ 
+    
+    
+ function bddprospection_gerer_appels(){
+   $content = drupal_get_form('bddprospection_gerer_appels_form');
+   return $content;
+   
+ }   
+    
+    
+ function bddprospection_gerer_appels_form(){
+  
+
+//FIELD Gérer appelss
+    $form['fieldset_gerer_appels'] = array (
+        '#type' => 'fieldset',
+        '#title' => 'Gerer les appels',
+        '#weight' => 0, 
+        '#collapsible' => TRUE, 
+        '#collapsed' => FALSE,
+    );   
+    
+    
+   $form['fieldset_gerer_appels']['boutton_consulter_appels'] = array (
+        '#value' => t('Consulter la liste des appels'),
+        '#type' => 'submit',
+        '#submit' => array('bddprospection_action_consulter_appels') 
+    );
+    
+    $form['fieldset_gerer_appels']['boutton_ajout_appels'] = array (
+        '#value' => t('Ajouter un appel'),
+        '#type' => 'submit',
+        '#submit' => array('bddprospection_action_ajouter_appels') 
+    ); 
+    
+//     $form['fieldset_gerer_appels']['boutton_mise_a_jour_appels'] = array (
+//        '#value' => t('Mettre a jour'),
+//        '#type' => 'submit',
+//        '#submit' => array('bddprospection_action_mettre_a_jour__prospecteurs') 
+//    );
+    
+    $form['fieldset_gerer_appels']['boutton_supprimer_appels'] = array (
+        '#value' => t('Supprimer un appel'),
+        '#type' => 'submit',
+        '#submit' => array('bddprospection_action_supprimer_appels') 
+    );
+   
+   
+    function bddprospection_action_consulter_appels($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/consulter_appels';
+    }
+    
+    function bddprospection_action_ajouter_appels($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/ajout_appels';
+    }
+    
+//    function bddprospection_action_mettre_a_jour__prospecteurs($form, &$form_state) {
+//      $form_state['redirect'] = 'bddprospection/maj_prospecteurs';
+//    }
+    
+    function bddprospection_action_supprimer_appels($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/supprimer_appels';
+    }
+    
+    
+    
+    return $form;
+    
+ }    
+    
+    
+    
+    
+    //PAGE CONSULTER APPELS
+    
+    function bddprospection_consulter_appels() {
+
+  # configure the table header columns
+  $header = array(  
+    array('data' => 'Numéro appel',                   'field' => 'Numero_Appel',               'sort' => 'ASC'),
+    array('data' => 'Date',                           'field' => 'Date_appel',                 'sort' => 'ASC'),
+    array('data' => 'Etudiant',                       'field' => 'Etudiant',                   'sort' => 'ASC'),
+    array('data' => 'Entreprise',                     'field' => 'Entreprise',                 'sort' => 'ASC'),
+    array('data' => 'Contact',                        'field' => 'Contact',                    'sort' => 'ASC'),
+    array('data' => 'Appreciation',                   'field' => 'Appreciation',               'sort' => 'ASC'),
+    array('data' => 'Relance',                        'field' => 'Relance',                    'sort' => 'ASC'),
+    array('data' => 'Courriel envoye',                'field' => 'Courriel_envoye',            'sort' => 'ASC'),
+    array('data' => 'Plaquette envoyee',               'field' => 'Plaquette_envoyee',           'sort' => 'ASC'),
+    array('data' => 'Rendez vous obtenu',             'field' => 'Rendez_vous_obtenu',         'sort' => 'ASC'),
+    array('data' => 'Date du rendez-vous',            'field' => 'Date_rendez_vous',           'sort' => 'ASC'),
+    array('data' => 'Remarques complémentaires',      'field' => 'Remarques_complementaires',  'sort' => 'ASC'),
+    array('data' => 'Rappel',                         'field' => 'Rappele',                    'sort' => 'ASC'),
+ 
+  );
+
+  # set the database table and initial SelectQuery options
+  # $select is a SelectQuery object.
+  # @see http://api.drupal.org/api/drupal/includes--database--select.inc/class/Se...
+  $select = db_select('bddprospectionprog_appel','p')
+              ->extend('PagerDefault')
+              ->extend('TableSort');
+
+  # get the desired fields
+  # orderByHeader is a TableSort method (http://api.drupal.org/api/drupal/includes--tablesort.inc/function/TableS...)
+  $select->fields('p', array('Numero_Appel', 'Date_appel', 'Etudiant', 'Entreprise', 'Contact','Appreciation','Relance','Courriel_envoye','Plaquette_envoyee','Rendez_vous_obtenu','Date_rendez_vous','Remarques_complementaires','Rappele'))
+         ->limit(20)
+         ->orderByHeader($header)
+         ->orderBy('Numero_Appel', 'DESC');  # TODO this call seems to be losing to orderByHeader on page load
+
+  # execute the query
+  $results = $select->execute();
+
+  # configure the table rows, making the first column a link to our 'edit' page
+  $rows = array();
+  foreach ($results as $row) {
+    $rows[] = array($row->Numero_Appel,                           
+                    $row->Date_appel,
+                    $row->Etudiant,
+                    $row->Entreprise,
+                    $row->Contact,
+                    $row->Appreciation,
+                    $row->Relance,
+                    $row->Courriel_envoye,
+                    $row->Plaquette_envoyee,
+                    $row->Rendez_vous_obtenu,
+                    $row->Date_rendez_vous,
+                    $row->Remarques_complementaires,
+                    $row->Rappele,
+    );
+  }
+
+  $output = theme('table', array('header' => $header,
+                                 'rows' => $rows ));
+
+  # add the pager
+  $output .= theme('pager');
+
+  return $output;
+
+}
+   
+
+
+//PAGE AJOUTER APPELS
+
+    function bddprospection_ajouter_appels(){
+      $content = drupal_get_form('bddprospection_ajouter_appels_general_form');
+      return $content;
+      
+    }
+
+
+    function bddprospection_ajouter_appels_general_form(){
+      
+      //Création des champs appel
+ 
+       $form['appel_identifiant'] = array(
+       '#title' => 'Identifiants HEI',
+       '#type' => 'textfield',
+       '#description' => t('Ne pas mettre de "h" au début ! Exemple : 10478 ;P'),
+       );
+
+
+       //Attention la variable date_par_default est utilisée pour tous les champs dates de la page ;P
+       $today = getdate();
+       $today_formaté = '$today[year]'.'-'.'$today[mon]'.'-'.'$today[mday]';
+
+       $format_date_appel = 'Y-m-d';
+       $form['appel_date_appel'] = array(
+          '#type' => 'date_text', // types 'date_select' and 'date_timezone' are also supported. See .inc file.
+          '#title' => t('Sélectionner la date de l\'appel'),
+          '#default_value' => $today_formaté, 
+          '#date_format' => $format_date_appel,
+          '#date_label_position' => 'within', // See other available attributes and what they do in date_api_elements.inc
+          '#date_timezone' => 'Europe/Paris',
+          '#date_year_range' => '0:+15',
+       );
+
+       $form['appel_entreprise'] = array(
+       '#title' => 'Entreprise',
+       '#type' => 'textfield',
+       
+       );
+       
+       $form['appel_contact'] = array(
+       '#title' => 'Contact',
+       '#type' => 'textfield',
+   
+       );
+       
+       
+       
+       //COMBOBOX
+       $form['appel_appreciation'] = array(
+       '#title' => 'Appréciation',
+       '#type' => 'select',
+       '#options' => array(
+              0 => t('Pas de réponse'),
+              1 => t('Pas intéressée'),
+              2 => t('Intéressée'),
+              3 => t('Très intéressée'),
+              ),
+       );
+
+       //COMBOBOX
+       $form['appel_relance'] = array(
+       '#title' => 'Relance',
+       '#type' => 'select',
+       '#options' => array(
+              0 => t('Jamais'),
+              1 => t('Dans plus d\'un an'),
+              2 => t('D\'ici trois mois à un an'),
+              3 => t('Dans moins de trois mois'),
+              4 => t('Rapidement'),
+              ),
+       );
+
+       $form['appel_courriel_envoye'] = array(
+       '#type' => 'checkbox',
+       '#title' => t('Courriel envoyé'),
+       '#options' => array(
+              0 => '0',
+              1 => '1',
+        ),
+       );
+
+       $form['appel_plaquette_envoye'] = array(
+       '#type' => 'checkbox',
+       '#title' => t('Plaquette envoyée'),
+       '#options' => array(
+              0 => '0',
+              1 => '1',
+        ),
+       );
+
+       $form['appel_rendez_vous_obtenu'] = array(
+       '#type' => 'checkbox',
+       '#title' => t('Rendez-vous obtenu'),
+       '#options' => array(
+              0 => '0',
+              1 => '1',
+        ),
+       );
+
+       //Création d'un champ date  
+       $format_date_rdv = 'Y-m-d';
+       $form['appel_date_rendez_vous'] = array(
+          '#type' => 'date_text', // types 'date_select' and 'date_timezone' are also supported. See .inc file.
+          '#title' => t('Date du rendez-vous'),
+          '#default_value' => $today_formaté,
+          '#date_format' => $format_date_rdv,
+          '#date_label_position' => 'within', // See other available attributes and what they do in date_api_elements.inc
+          '#date_timezone' => 'Europe/Paris',
+          '#date_year_range' => '0:+15',
+       );
+
+        $form['appel_remarques'] = array(
+        '#title' => 'Remarques Complémentaires',
+        '#type' => 'textarea',
+        );
+
+       
+      
+           
+      $form['valider'] = array(
+        '#type' => 'submit',
+        '#value' => t('Soumettre'),
+        '#weight' => 4,
+        '#submit' => array('bddprospection_ajouter_appels_general_submit')
+      );
+      
+      
+      return $form;
+      
+    }
+    
+    
+    
+    
+    
+    function bddprospection_ajouter_appels_general_submit($form, &$form_state){
+      
+      //
+    
+    $appreciation="Pas de réponse";
+    switch($form_state['values']['appel_appreciation']){
+      case 1:
+         $appreciation="Pas intéressée";
+      case 2:
+         $appreciation="Intéressée";
+      case 3:
+         $appreciation="Très intéressée";
+    }
+    
+    $relance="Jamais";
+    switch($form_state['values']['appel_relance']){
+      case 0:
+         $relance="Jamais";
+      case 1:
+         $relance="Dans plus d\'un an";
+      case 2:
+         $relance="D\'ici trois mois à un an";
+      case 3:
+         $relance="Dans moins de trois mois";
+      case 4:
+         $relance="Rapidement";
+    }
+    
+    
+    
+    
+    
+    $query_appel = db_insert('bddprospectionprog_appel');
+    $query_appel
+    ->fields(array(
+      'Date_appel'=>$form_state['values']['appel_date_appel'],
+      'Etudiant'=>$form_state['values']['appel_identifiant'],                   /////RECUPERER LE # courant! 
+      'Entreprise'=>$form_state['values']['appel_entreprise'],
+      'Contact'=>$form_state['values']['appel_contact'],
+      'Appreciation'=>$appreciation,
+      'Relance'=>$relance,
+      'Courriel_envoye'=>$form_state['values']['appel_courriel_envoye'],
+      'Plaquette_envoyee'=>$form_state['values']['appel_plaquette_envoye'],
+      'Rendez_vous_obtenu'=>$form_state['values']['appel_rendez_vous_obtenu'],
+      'Date_rendez_vous'=>$form_state['values']['appel_date_rendez_vous'],
+      'Remarques_complementaires'=>$form_state['values']['appel_remarques'],    //// Limiter à 255 caractères
+      'Rappele'=>'0',
+      ))
+
+    ->execute();
+      
+      
+    }
+    
+    
+    
+    
+       
+    
+    
+    
+    
+
+    //PAGE MAJ PROSPECTEURS
+    
+//    function bddprospection_mettre_a_jour_prospecteurs(){
+//      $content = drupal_get_form('bddprospection_mettre_a_jour_prospecteurs_form');
+//      return $content;
+//    }
+//    
+//       
+//    
+//    function bddprospection_mettre_a_jour_prospecteurs_form(){
+//    
+//     
+//      $requete_select_liste_etudiant = db_select('bddprospectionprog_prospecteurs');
+//      $requete_select_liste_etudiant->fields('bddprospectionprog_prospecteurs', array('Nom'));
+//      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+//      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+//
+//      $Liste_etudiants=array();
+//
+//      foreach ($result_select_liste_etudiant as $cle => $val){
+//          $Liste_etudiants[] = $val['Nom'];
+//      }
+//
+//      $form['mettre_a_jour_prospecteurs_Nom'] = array(
+//      '#title' => 'Nom',
+//      '#type' => 'select',
+//      '#options' => $Liste_etudiants,
+//      ); 
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Charger les données du prospecteur'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_ajouter_prospecteurs_submit')
+//      );
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Prenom'] = array(
+//        '#title' => 'Prenom',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      $form['mettre_a_jour_prospecteurs_Matricule'] = array(
+//        '#title' => 'Matricule',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Mandat'] = array(
+//        '#title' => 'Mandat',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Classe'] = array(
+//        '#title' => 'Classe',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Telephone'] = array(
+//        '#title' => 'Telephone',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Departement'] = array(
+//        '#title' => 'Departement',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Responsable'] = array(
+//        '#title' => 'Responsable',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Soumettre'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_effectuer_mise_a_jour_prospecteurs_submit')
+//      );
+//        
+//      
+//      return $form;
+//      
+//    }
+//    
+//  
+//    
+//    function bddprospection_effectuer_mise_a_jour_prospecteurs_submit($form, &$form_state){
+//      
+//      db_update('bddprospectionprog_prospecteurs') ->fields( 
+//        array( 
+//          'Matricule_HEI' => $form_state['values']['mettre_a_jour_prospecteurs_Matricule'], 
+//          'Nom' => $form_state['values']['mettre_a_jour_prospecteurs_Nom'], 
+//          'Prenom' => $form_state['values']['mettre_a_jour_prospecteurs_Prenom'], 
+//          'Mandat' => $form_state['values']['mettre_a_jour_prospecteurs_Mandat'], 
+//          'Classe' => $form_state['values']['mettre_a_jour_prospecteurs_Classe'], 
+//          'Telephone' => $form_state['values']['mettre_a_jour_prospecteurs_Telephone'], 
+//          'Departement' => $form_state['values']['mettre_a_jour_prospecteurs_Departement'], 
+//          'Directeur_de_departement' => $form_state['values']['mettre_a_jour_prospecteurs_Responsable'], 
+//        ) 
+//      ) ->execute();
+//      
+//    }
+//   
+    
+    
+    
+    
+    
+    
+    
+   function bddprospection_supprimer_appels(){
+      
+       $content = drupal_get_form('bddprospection_supprimer_appels_form');
+       return $content;
+      
+    }
+    
+    
+      function bddprospection_supprimer_appels_form(){
+      
+      $requete_select_liste_etudiant = db_select('bddprospectionprog_appel');
+      $requete_select_liste_etudiant->fields('bddprospectionprog_appel', array('Numero_Appel'));
+      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+
+      $Liste_appels=array();
+
+      foreach ($result_select_liste_etudiant as $cle => $val){
+          $Liste_appels[] = $val['Numero_Appel'];
+      }
+
+            
+      $form['supprimer_appels'] = array(
+      '#title' => t('Supprimer'),
+      '#type' => 'select',
+      '#options' => $Liste_appels,
+      ); 
+      
+      
+       $form['valider'] = array(
+        '#type' => 'submit',
+        '#value' => t('Supprimer'),
+        '#submit' => array('bddprospection_supprimer_appels_submit')
+      );
+      
+           
+      return $form;
+    }
+    
+    
+    
+    function bddprospection_supprimer_appels_submit($form, &$form_state){
+      
+      $resultat = $form_state['values']['supprimer_appels'];
+      dpm($resultat);
+            
+      //db_delete('bddprospectionprog_prospecteurs') ->condition('Nom', $variable) ->execute();
+    } 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1135,11 +1907,11 @@ dpm($record);
         '#submit' => array('bddprospection_action_ajouter_prospecteurs') 
     );
     
-    $form['fieldset_gerer_prospecteurs']['boutton_mise_a_jour_prospecteurs'] = array (
-        '#value' => t('Mettre a jour'),
-        '#type' => 'submit',
-        '#submit' => array('bddprospection_action_mettre_a_jour__prospecteurs') 
-    );
+//    $form['fieldset_gerer_prospecteurs']['boutton_mise_a_jour_prospecteurs'] = array (
+//        '#value' => t('Mettre a jour'),
+//        '#type' => 'submit',
+//        '#submit' => array('bddprospection_action_mettre_a_jour__prospecteurs') 
+//    );
     
     $form['fieldset_gerer_prospecteurs']['boutton_supprimer_prospecteur'] = array (
         '#value' => t('Supprimer un prospecteurs'),
@@ -1156,9 +1928,9 @@ dpm($record);
       $form_state['redirect'] = 'bddprospection/ajout_prospecteurs';
     }
     
-    function bddprospection_action_mettre_a_jour__prospecteurs($form, &$form_state) {
-      $form_state['redirect'] = 'bddprospection/maj_prospecteurs';
-    }
+//    function bddprospection_action_mettre_a_jour__prospecteurs($form, &$form_state) {
+//      $form_state['redirect'] = 'bddprospection/maj_prospecteurs';
+//    }
     
     function bddprospection_action_supprimer_prospecteurs($form, &$form_state) {
       $form_state['redirect'] = 'bddprospection/supprimer_prospecteurs';
@@ -1362,129 +2134,1419 @@ dpm($record);
 
     //PAGE MAJ PROSPECTEURS
     
-    function bddprospection_mettre_a_jour_prospecteurs(){
-      $content = drupal_get_form('bddprospection_mettre_a_jour_prospecteurs_form');
-      return $content;
+//    function bddprospection_mettre_a_jour_prospecteurs(){
+//      $content = drupal_get_form('bddprospection_mettre_a_jour_prospecteurs_form');
+//      return $content;
+//    }
+//    
+//       
+//    
+//    function bddprospection_mettre_a_jour_prospecteurs_form(){
+//    
+//     
+//      $requete_select_liste_etudiant = db_select('bddprospectionprog_prospecteurs');
+//      $requete_select_liste_etudiant->fields('bddprospectionprog_prospecteurs', array('Nom'));
+//      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+//      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+//
+//      $Liste_etudiants=array();
+//
+//      foreach ($result_select_liste_etudiant as $cle => $val){
+//          $Liste_etudiants[] = $val['Nom'];
+//      }
+//
+//      $form['mettre_a_jour_prospecteurs_Nom'] = array(
+//      '#title' => 'Nom',
+//      '#type' => 'select',
+//      '#options' => $Liste_etudiants,
+//      ); 
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Charger les données du prospecteur'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_ajouter_prospecteurs_submit')
+//      );
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Prenom'] = array(
+//        '#title' => 'Prenom',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      $form['mettre_a_jour_prospecteurs_Matricule'] = array(
+//        '#title' => 'Matricule',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Mandat'] = array(
+//        '#title' => 'Mandat',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Classe'] = array(
+//        '#title' => 'Classe',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Telephone'] = array(
+//        '#title' => 'Telephone',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Departement'] = array(
+//        '#title' => 'Departement',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Responsable'] = array(
+//        '#title' => 'Responsable',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Soumettre'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_effectuer_mise_a_jour_prospecteurs_submit')
+//      );
+//        
+//      
+//      return $form;
+//      
+//    }
+//    
+//  
+//    
+//    function bddprospection_effectuer_mise_a_jour_prospecteurs_submit($form, &$form_state){
+//      
+//      db_update('bddprospectionprog_prospecteurs') ->fields( 
+//        array( 
+//          'Matricule_HEI' => $form_state['values']['mettre_a_jour_prospecteurs_Matricule'], 
+//          'Nom' => $form_state['values']['mettre_a_jour_prospecteurs_Nom'], 
+//          'Prenom' => $form_state['values']['mettre_a_jour_prospecteurs_Prenom'], 
+//          'Mandat' => $form_state['values']['mettre_a_jour_prospecteurs_Mandat'], 
+//          'Classe' => $form_state['values']['mettre_a_jour_prospecteurs_Classe'], 
+//          'Telephone' => $form_state['values']['mettre_a_jour_prospecteurs_Telephone'], 
+//          'Departement' => $form_state['values']['mettre_a_jour_prospecteurs_Departement'], 
+//          'Directeur_de_departement' => $form_state['values']['mettre_a_jour_prospecteurs_Responsable'], 
+//        ) 
+//      ) ->execute();
+//      
+//    }
+//    
+    
+    
+    
+    
+    
+    
+    function bddprospection_supprimer_prospecteurs(){
+      
+       $content = drupal_get_form('bddprospection_supprimer_prospecteurs_form');
+       return $content;
+      
     }
     
-       
     
-    function bddprospection_mettre_a_jour_prospecteurs_form(){
-    
-     
+    function bddprospection_supprimer_prospecteurs_form(){
+      
       $requete_select_liste_etudiant = db_select('bddprospectionprog_prospecteurs');
-      $requete_select_liste_etudiant->fields('bddprospectionprog_prospecteurs', array('Nom'));
+      $requete_select_liste_etudiant->fields('bddprospectionprog_prospecteurs', array('Matricule_HEI'));
       $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
       $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
 
       $Liste_etudiants=array();
 
       foreach ($result_select_liste_etudiant as $cle => $val){
-          $Liste_etudiants[] = $val['Nom'];
+          $Liste_etudiants[] = $val['Matricule_HEI'];
       }
 
-      $form['mettre_a_jour_prospecteurs_Nom'] = array(
-      '#title' => 'Nom',
+            
+      $form['supprimer_prospecteurs'] = array(
+      '#title' => t('Prospecteur'),
       '#type' => 'select',
       '#options' => $Liste_etudiants,
       ); 
       
       
-      $form['valider'] = array(
+       $form['valider'] = array(
         '#type' => 'submit',
-        '#value' => t('Charger les données du prospecteur'),
-        '#weight' => 4,
-        '#submit' => array('bddprospection_ajouter_prospecteurs_submit')
+        '#value' => t('Supprimer'),
+        '#submit' => array('bddprospection_supprimer_prospecteurs_submit')
       );
       
+           
+      return $form;
+    }
+    
+    
+    
+    function bddprospection_supprimer_prospecteurs_submit($form, &$form_state){
       
+      $resultat = $form_state['values']['supprimer_prospecteurs'];
+      dpm($resultat);
+            
+      //db_delete('bddprospectionprog_prospecteurs') ->condition('Nom', $variable) ->execute();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+       
+/*******************************************************************************
+ *
+ * ***********  PAGE ADMINISTRER BDD / GERER ENTREPRISES ***********************
+ * 
+********************************************************************************/
+ 
+    
+    
+ function bddprospection_gerer_entreprises(){
+   $content = drupal_get_form('bddprospection_gerer_entreprises_form');
+   return $content;
+   
+ }   
+    
+    
+ function bddprospection_gerer_entreprises_form(){
+  
+   
+//FIELD Gérer propsecteurs
+    $form['fieldset_gerer_entreprises'] = array (
+        '#type' => 'fieldset',
+        '#title' => 'Gerer les entreprises',
+        '#weight' => 0, 
+        '#collapsible' => TRUE, 
+        '#collapsed' => FALSE,
+    );
+    
+     $form['fieldset_gerer_entreprises']['boutton_consulter_entreprises'] = array (
+        '#value' => t('Consulter la liste des entreprises'),
+        '#type' => 'submit',
+        '#submit' => array('bddprospection_action_consulter_entreprises') 
+    );
+    
+    $form['fieldset_gerer_entreprises']['boutton_ajout_entreprises'] = array (
+        '#value' => t('Ajouter une entreprise'),
+        '#type' => 'submit',
+        '#submit' => array('bddprospection_action_ajouter_entreprises') 
+    );
+    
+//    $form['fieldset_gerer_entreprises']['boutton_mise_a_jour_entreprises'] = array (
+//        '#value' => t('Mettre a jour'),
+//        '#type' => 'submit',
+//        '#submit' => array('bddprospection_action_mettre_a_jour__entreprises') 
+//    );
+    
+    $form['fieldset_gerer_entreprises']['boutton_supprimer_entreprises'] = array (
+        '#value' => t('Supprimer un entreprise'),
+        '#type' => 'submit',
+        '#submit' => array('bddprospection_action_supprimer_entreprises') 
+    );
+   
+   
+    function bddprospection_action_consulter_entreprises($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/consulter_entreprises';
+    }
+    
+    function bddprospection_action_ajouter_entreprises($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/ajout_entreprises';
+    }
+    
+//    function bddprospection_action_mettre_a_jour__entreprises($form, &$form_state) {
+//      $form_state['redirect'] = 'bddprospection/maj_entreprises';
+//    }
+    
+    function bddprospection_action_supprimer_entreprises($form, &$form_state) {
+      $form_state['redirect'] = 'bddprospection/supprimer_entreprises';
+    }
+    
+    return $form;
+    
+ }   
+    
+    
+    
+ 
+ 
+   //PAGE CONSULTER ENTREPRISES
+    
+    function bddprospection_consulter_entreprises() {
+
+  # configure the table header columns
+  $header = array(  
+    array('data' => 'Nom',                   'field' => 'Nom',               'sort' => 'ASC'),
+    array('data' => 'Secteur d\'activite',   'field' => 'Secteur_activite',  'sort' => 'ASC'),
+    array('data' => 'Adresse',               'field' => 'Adresse',           'sort' => 'ASC'),
+    array('data' => 'Code Postal',           'field' => 'Code_Postal',       'sort' => 'ASC'),
+    array('data' => 'Ville',                 'field' => 'Ville',             'sort' => 'ASC'),
+    array('data' => 'Telephone',             'field' => 'Telephone',         'sort' => 'ASC'),
+    array('data' => 'Fax',                   'field' => 'Fax',               'sort' => 'ASC'),
+    array('data' => 'Mail',                  'field' => 'Mail',              'sort' => 'ASC'),
+    
+  );
+
+  # set the database table and initial SelectQuery options
+  # $select is a SelectQuery object.
+  # @see http://api.drupal.org/api/drupal/includes--database--select.inc/class/Se...
+  $select = db_select('bddprospectionprog_entreprise','p')
+              ->extend('PagerDefault')
+              ->extend('TableSort');
+
+  # get the desired fields
+  # orderByHeader is a TableSort method (http://api.drupal.org/api/drupal/includes--tablesort.inc/function/TableS...)
+  $select->fields('p', array('Nom', 'Secteur_activite', 'Adresse', 'Code_Postal', 'Ville','Telephone','Fax','Mail'))
+         ->limit(50)
+         ->orderByHeader($header)
+         ->orderBy('Nom', 'DESC');  # TODO this call seems to be losing to orderByHeader on page load
+
+  # execute the query
+  $results = $select->execute();
+
+  # configure the table rows, making the first column a link to our 'edit' page
+  $rows = array();
+  foreach ($results as $row) {
+    $rows[] = array($row->Nom,                           
+                    $row->Secteur_activite,
+                    $row->Adresse,
+                    $row->Code_Postal,
+                    $row->Ville,
+                    $row->Telephone,
+                    $row->Fax,
+                    $row->Mail,
+                    
+    );
+  }
+
+  $output = theme('table', array('header' => $header,
+                                 'rows' => $rows ));
+
+  # add the pager
+  $output .= theme('pager');
+
+  return $output;
+
+}  
+    
+    
+    
+
+
+
+//PAGE AJOUTER ENTREPRISE
+
+    function bddprospection_ajouter_entreprises(){
+      $content = drupal_get_form('bddprospection_ajouter_entreprises_form');
+      return $content;
       
+    }
+
+    //TODO
+
+    function bddprospection_ajouter_entreprises_form(){
       
-      
-      
-      
-      
-      
-      
-      
-      $form['mettre_a_jour_prospecteurs_Prenom'] = array(
-        '#title' => 'Prenom',
-        '#type' => 'textfield',
-        '#default_value' => '',
+      ////Création des champs Entreprise
+      $form['entreprise_nom'] = array(
+      '#title' => 'Nom de l\'entreprise',
+      '#type' => 'textfield',
+      '#required' => TRUE,
       );
-      
-      $form['mettre_a_jour_prospecteurs_Matricule'] = array(
-        '#title' => 'Matricule',
-        '#type' => 'textfield',
-        '#default_value' => '',
+
+      $form['entreprise_secteur'] = array(
+      '#title' => 'Secteur d\'activité',
+      '#type' => 'textfield',
       );
-      
-      
-      
-      
-      $form['mettre_a_jour_prospecteurs_Mandat'] = array(
-        '#title' => 'Mandat',
-        '#type' => 'textfield',
-        '#default_value' => '',
+
+      $form['entreprise_adress'] = array(
+      '#title' => 'Adresse',
+      '#type' => 'textfield',
       );
-      
-      
-      $form['mettre_a_jour_prospecteurs_Classe'] = array(
-        '#title' => 'Classe',
-        '#type' => 'textfield',
-        '#default_value' => '',
+
+      $form['entreprise_cp'] = array(
+      '#title' => 'Code Postal',
+      '#type' => 'textfield',
       );
-      
-      
-      $form['mettre_a_jour_prospecteurs_Telephone'] = array(
-        '#title' => 'Telephone',
-        '#type' => 'textfield',
-        '#default_value' => '',
+
+      $form['entreprise_ville'] = array(
+      '#title' => 'Ville',
+      '#type' => 'textfield',
       );
-      
-      
-      $form['mettre_a_jour_prospecteurs_Departement'] = array(
-        '#title' => 'Departement',
-        '#type' => 'textfield',
-        '#default_value' => '',
+
+      $form['entreprise_telephone'] = array(
+      '#title' => 'Téléphone',
+      '#type' => 'textfield',
       );
-      
-      
-      $form['mettre_a_jour_prospecteurs_Responsable'] = array(
-        '#title' => 'Responsable',
-        '#type' => 'textfield',
-        '#default_value' => '',
+
+      $form['entreprise_fax'] = array(
+      '#title' => 'Fax',
+      '#type' => 'textfield',
       );
+
+      $form['entreprise_mail'] = array(
+      '#title' => 'E-mail',
+      '#type' => 'textfield',
+      );
+ 
       
-      
+           
       $form['valider'] = array(
         '#type' => 'submit',
         '#value' => t('Soumettre'),
         '#weight' => 4,
-        '#submit' => array('bddprospection_effectuer_mise_a_jour_prospecteurs_submit')
+        '#submit' => array('bddprospection_ajouter_entreprises_submit')
       );
-        
+      
       
       return $form;
       
     }
     
+    
+    
+    
+    
+    function bddprospection_ajouter_entreprises_submit($form, &$form_state){
+      
+      $query_entreprise = db_insert('bddprospectionprog_entreprise');
+
+    $query_entreprise
+    ->fields(array(
+      'Nom'=>$form_state['values']['entreprise_nom'],
+      'Secteur_activite'=>$form_state['values']['entreprise_secteur'],
+      'Adresse'=>$form_state['values']['entreprise_adress'],
+      'Code_Postal'=>$form_state['values']['entreprise_cp'],
+      'Ville'=>$form_state['values']['entreprise_ville'],
+      'Telephone'=>$form_state['values']['entreprise_telephone'],
+      'Fax'=>$form_state['values']['entreprise_fax'],
+      'Mail'=>$form_state['values']['entreprise_mail'],
+      ))
+        
+    ->execute();
+      
+      
+    }
+    
+    
+    
+    
+       
+    
+    
+    
+    
+
+    //PAGE MAJ PROSPECTEURS
+    
+//    function bddprospection_mettre_a_jour_prospecteurs(){
+//      $content = drupal_get_form('bddprospection_mettre_a_jour_prospecteurs_form');
+//      return $content;
+//    }
+//    
+//       
+//    
+//    function bddprospection_mettre_a_jour_prospecteurs_form(){
+//    
+//     
+//      $requete_select_liste_etudiant = db_select('bddprospectionprog_prospecteurs');
+//      $requete_select_liste_etudiant->fields('bddprospectionprog_prospecteurs', array('Nom'));
+//      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+//      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+//
+//      $Liste_etudiants=array();
+//
+//      foreach ($result_select_liste_etudiant as $cle => $val){
+//          $Liste_etudiants[] = $val['Nom'];
+//      }
+//
+//      $form['mettre_a_jour_prospecteurs_Nom'] = array(
+//      '#title' => 'Nom',
+//      '#type' => 'select',
+//      '#options' => $Liste_etudiants,
+//      ); 
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Charger les données du prospecteur'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_ajouter_prospecteurs_submit')
+//      );
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Prenom'] = array(
+//        '#title' => 'Prenom',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      $form['mettre_a_jour_prospecteurs_Matricule'] = array(
+//        '#title' => 'Matricule',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Mandat'] = array(
+//        '#title' => 'Mandat',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Classe'] = array(
+//        '#title' => 'Classe',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Telephone'] = array(
+//        '#title' => 'Telephone',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Departement'] = array(
+//        '#title' => 'Departement',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Responsable'] = array(
+//        '#title' => 'Responsable',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Soumettre'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_effectuer_mise_a_jour_prospecteurs_submit')
+//      );
+//        
+//      
+//      return $form;
+//      
+//    }
+//    
+//  
+//    
+//    function bddprospection_effectuer_mise_a_jour_prospecteurs_submit($form, &$form_state){
+//      
+//      db_update('bddprospectionprog_prospecteurs') ->fields( 
+//        array( 
+//          'Matricule_HEI' => $form_state['values']['mettre_a_jour_prospecteurs_Matricule'], 
+//          'Nom' => $form_state['values']['mettre_a_jour_prospecteurs_Nom'], 
+//          'Prenom' => $form_state['values']['mettre_a_jour_prospecteurs_Prenom'], 
+//          'Mandat' => $form_state['values']['mettre_a_jour_prospecteurs_Mandat'], 
+//          'Classe' => $form_state['values']['mettre_a_jour_prospecteurs_Classe'], 
+//          'Telephone' => $form_state['values']['mettre_a_jour_prospecteurs_Telephone'], 
+//          'Departement' => $form_state['values']['mettre_a_jour_prospecteurs_Departement'], 
+//          'Directeur_de_departement' => $form_state['values']['mettre_a_jour_prospecteurs_Responsable'], 
+//        ) 
+//      ) ->execute();
+//      
+//    }
+//   
+    
+    
+    
+    
+     function bddprospection_supprimer_entreprises(){
+      
+       $content = drupal_get_form('bddprospection_supprimer_entreprises_form');
+       return $content;
+      
+    }
+    
+    
+      function bddprospection_supprimer_entreprises_form(){
+      
+      $requete_select_liste_etudiant = db_select('bddprospectionprog_entreprise');
+      $requete_select_liste_etudiant->fields('bddprospectionprog_entreprise', array('Nom'));
+      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+
+      $Liste_entreprises=array();
+
+      foreach ($result_select_liste_etudiant as $cle => $val){
+          $Liste_entreprises[] = $val['Nom'];
+      }
+
+            
+      $form['supprimer_entreprises'] = array(
+      '#title' => t('Supprimer'),
+      '#type' => 'select',
+      '#options' => $Liste_entreprises,
+      ); 
+      
+      
+       $form['valider'] = array(
+        '#type' => 'submit',
+        '#value' => t('Supprimer'),
+        '#submit' => array('bddprospection_supprimer_entreprises_submit')
+      );
+      
+           
+      return $form;
+    }
+    
+    
+    
+    function bddprospection_supprimer_entreprises_submit($form, &$form_state){
+      
+      $resultat = $form_state['values']['supprimer_entreprises'];
+      dpm($resultat);
+            
+      //db_delete('bddprospectionprog_prospecteurs') ->condition('Nom', $variable) ->execute();
+    } 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+       
+      /*******************************************************************************
+       *
+       * ***********  PAGE ADMINISTRER BDD / GERER CONTACTS ***********************
+       * 
+      ********************************************************************************/
+
+
+
+       function bddprospection_gerer_contacts(){
+         $content = drupal_get_form('bddprospection_gerer_contacts_form');
+         return $content;
+
+       }   
+
+
+       function bddprospection_gerer_contacts_form(){
+
+
+      //FIELD Gérer contacts
+          $form['fieldset_gerer_contacts'] = array (
+              '#type' => 'fieldset',
+              '#title' => 'Gerer les contacts',
+              '#weight' => 0, 
+              '#collapsible' => TRUE, 
+              '#collapsed' => FALSE,
+          );
+
+           $form['fieldset_gerer_contacts']['boutton_consulter_contacts'] = array (
+              '#value' => t('Consulter la liste des contacts'),
+              '#type' => 'submit',
+              '#submit' => array('bddprospection_action_consulter_contacts') 
+          );
+
+          $form['fieldset_gerer_contacts']['boutton_ajout_contacts'] = array (
+              '#value' => t('Ajouter un contact'),
+              '#type' => 'submit',
+              '#submit' => array('bddprospection_action_ajouter_contacts') 
+          );
+
+      //    $form['fieldset_gerer_contacts']['boutton_mise_a_jour_contacts'] = array (
+      //        '#value' => t('Mettre a jour'),
+      //        '#type' => 'submit',
+      //        '#submit' => array('bddprospection_action_mettre_a_jour__contacts') 
+      //    );
+
+          $form['fieldset_gerer_contacts']['boutton_supprimer_contacts'] = array (
+              '#value' => t('Supprimer un contact'),
+              '#type' => 'submit',
+              '#submit' => array('bddprospection_action_supprimer_contacts') 
+          );
+
+
+          function bddprospection_action_consulter_contacts($form, &$form_state) {
+            $form_state['redirect'] = 'bddprospection/consulter_contacts';
+          }
+
+          function bddprospection_action_ajouter_contacts($form, &$form_state) {
+            $form_state['redirect'] = 'bddprospection/ajout_contacts';
+          }
+
+      //    function bddprospection_action_mettre_a_jour__entreprises($form, &$form_state) {
+      //      $form_state['redirect'] = 'bddprospection/maj_entreprises';
+      //    }
+
+          function bddprospection_action_supprimer_contacts($form, &$form_state) {
+            $form_state['redirect'] = 'bddprospection/supprimer_contacts';
+          }
+
+          return $form;
+
+       }   
+    
+    
+    
+    
+ 
+ 
+ 
+
+      //PAGE CONSULTER CONTACTS
+
+         function bddprospection_consulter_contacts() {    
+
+       # configure the table header columns
+       $header = array(  
+         array('data' => 'Entreprise',        'field' => 'Entreprise',      'sort' => 'ASC'),
+         array('data' => 'Nom',               'field' => 'Nom',             'sort' => 'ASC'),
+         array('data' => 'Prenom',            'field' => 'Prenom',          'sort' => 'ASC'),
+         array('data' => 'Fonction',          'field' => 'Fonction',        'sort' => 'ASC'),
+         array('data' => 'Telephone',         'field' => 'Telephone',       'sort' => 'ASC'),
+         array('data' => 'Portable',          'field' => 'Portable',        'sort' => 'ASC'),
+         array('data' => 'Mail',              'field' => 'Mail',            'sort' => 'ASC'),
+        
+       );
+
+       # set the database table and initial SelectQuery options
+       # $select is a SelectQuery object.
+       # @see http://api.drupal.org/api/drupal/includes--database--select.inc/class/Se...
+       $select = db_select('bddprospectionprog_contact','p')
+                   ->extend('PagerDefault')
+                   ->extend('TableSort');
+
+       # get the desired fields
+       # orderByHeader is a TableSort method (http://api.drupal.org/api/drupal/includes--tablesort.inc/function/TableS...)
+       $select->fields('p', array('Entreprise', 'Nom', 'Prenom', 'Fonction', 'Telephone','Portable','Mail'))
+              ->limit(20)
+              ->orderByHeader($header)
+              ->orderBy('Nom', 'DESC');  # TODO this call seems to be losing to orderByHeader on page load
+
+       # execute the query
+       $results = $select->execute();
+
+       # configure the table rows, making the first column a link to our 'edit' page
+       $rows = array();
+       foreach ($results as $row) {
+         $rows[] = array($row->Entreprise,                           
+                         $row->Nom,
+                         $row->Prenom,
+                         $row->Fonction,
+                         $row->Telephone,
+                         $row->Portable,
+                         $row->Mail,
+                        
+         );
+       }
+
+       $output = theme('table', array('header' => $header,
+                                      'rows' => $rows ));
+
+       # add the pager
+       $output .= theme('pager');
+
+       return $output;
+
+     }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//PAGE AJOUTER CONTACTS
+
+    function bddprospection_ajouter_contacts(){
+      $content = drupal_get_form('bddprospection_ajouter_contacts_form');
+      return $content;
+      
+    }
+
+
+    function bddprospection_ajouter_appels_form(){
+      
+        ////Création des champs Contact
+     $form['contact_entreprise'] = array(
+     '#title' => 'Entreprise',
+     '#type' => 'textfield',
+     );
+      
+     $form['contact_nom'] = array(
+     '#title' => 'Nom',
+     '#type' => 'textfield',
+     );
+
+     $form['contact_prenom'] = array(
+     '#title' => 'Prénom',
+     '#type' => 'textfield',
+     );
+
+     $form['contact_fonction'] = array(
+     '#title' => 'Fonction',
+     '#type' => 'textfield',
+     );
+
+     $form['contact_telephone'] = array(
+     '#title' => 'Téléphone',
+     '#type' => 'textfield',
+     );
+
+     $form['contact_portable'] = array(
+     '#title' => 'Portable',
+     '#type' => 'textfield',
+     );
+
+     $form['contact_mail'] = array(
+     '#title' => 'E-mail',
+     '#type' => 'textfield',
+     );
   
-    
-    function bddprospection_effectuer_mise_a_jour_prospecteurs_submit($form, &$form_state){
+      return $form;
       
-      db_update('bddprospectionprog_prospecteurs') ->fields( 
-        array( 
-          'Matricule_HEI' => $form_state['values']['mettre_a_jour_prospecteurs_Matricule'], 
-          'Nom' => $form_state['values']['mettre_a_jour_prospecteurs_Nom'], 
-          'Prenom' => $form_state['values']['mettre_a_jour_prospecteurs_Prenom'], 
-          'Mandat' => $form_state['values']['mettre_a_jour_prospecteurs_Mandat'], 
-          'Classe' => $form_state['values']['mettre_a_jour_prospecteurs_Classe'], 
-          'Telephone' => $form_state['values']['mettre_a_jour_prospecteurs_Telephone'], 
-          'Departement' => $form_state['values']['mettre_a_jour_prospecteurs_Departement'], 
-          'Directeur_de_departement' => $form_state['values']['mettre_a_jour_prospecteurs_Responsable'], 
-        ) 
-      ) ->execute();
+    }
+    
+    
+    
+    
+    
+    function bddprospection_ajouter_contacts_submit($form, &$form_state){
+      
+   
+    $query_contact = db_insert('bddprospectionprog_contact');
+    $query_contact
+    ->fields(array(
+      'Entreprise'=>$form_state['values']['contact_entreprise'],
+      'Nom'=>$form_state['values']['contact_nom'],
+      'Prenom'=>$form_state['values']['contact_prenom'],
+      'Fonction'=>$form_state['values']['contact_fonction'],
+      'Telephone'=>$form_state['values']['contact_telephone'],
+      'Portable'=>$form_state['values']['contact_portable'],
+      'Mail'=>$form_state['values']['contact_mail'],
+      ))
+        
+    ->execute();
+      
+      
+    }
+    
+    
+    
+    
+       
+    
+    
+    
+    
+
+    //PAGE MAJ CONTACTS
+    
+//    function bddprospection_mettre_a_jour_prospecteurs(){
+//      $content = drupal_get_form('bddprospection_mettre_a_jour_prospecteurs_form');
+//      return $content;
+//    }
+//    
+//       
+//    
+//    function bddprospection_mettre_a_jour_prospecteurs_form(){
+//    
+//     
+//      $requete_select_liste_etudiant = db_select('bddprospectionprog_prospecteurs');
+//      $requete_select_liste_etudiant->fields('bddprospectionprog_prospecteurs', array('Nom'));
+//      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+//      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+//
+//      $Liste_etudiants=array();
+//
+//      foreach ($result_select_liste_etudiant as $cle => $val){
+//          $Liste_etudiants[] = $val['Nom'];
+//      }
+//
+//      $form['mettre_a_jour_prospecteurs_Nom'] = array(
+//      '#title' => 'Nom',
+//      '#type' => 'select',
+//      '#options' => $Liste_etudiants,
+//      ); 
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Charger les données du prospecteur'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_ajouter_prospecteurs_submit')
+//      );
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Prenom'] = array(
+//        '#title' => 'Prenom',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      $form['mettre_a_jour_prospecteurs_Matricule'] = array(
+//        '#title' => 'Matricule',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Mandat'] = array(
+//        '#title' => 'Mandat',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Classe'] = array(
+//        '#title' => 'Classe',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Telephone'] = array(
+//        '#title' => 'Telephone',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Departement'] = array(
+//        '#title' => 'Departement',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Responsable'] = array(
+//        '#title' => 'Responsable',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Soumettre'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_effectuer_mise_a_jour_prospecteurs_submit')
+//      );
+//        
+//      
+//      return $form;
+//      
+//    }
+//    
+//  
+//    
+//    function bddprospection_effectuer_mise_a_jour_prospecteurs_submit($form, &$form_state){
+//      
+//      db_update('bddprospectionprog_prospecteurs') ->fields( 
+//        array( 
+//          'Matricule_HEI' => $form_state['values']['mettre_a_jour_prospecteurs_Matricule'], 
+//          'Nom' => $form_state['values']['mettre_a_jour_prospecteurs_Nom'], 
+//          'Prenom' => $form_state['values']['mettre_a_jour_prospecteurs_Prenom'], 
+//          'Mandat' => $form_state['values']['mettre_a_jour_prospecteurs_Mandat'], 
+//          'Classe' => $form_state['values']['mettre_a_jour_prospecteurs_Classe'], 
+//          'Telephone' => $form_state['values']['mettre_a_jour_prospecteurs_Telephone'], 
+//          'Departement' => $form_state['values']['mettre_a_jour_prospecteurs_Departement'], 
+//          'Directeur_de_departement' => $form_state['values']['mettre_a_jour_prospecteurs_Responsable'], 
+//        ) 
+//      ) ->execute();
+//      
+//    }
+//   
+    
+    
+     
+    
+   function bddprospection_supprimer_contacts(){
+      
+       $content = drupal_get_form('bddprospection_supprimer_contacts_form');
+       return $content;
+      
+    }
+    
+    
+      function bddprospection_supprimer_contacts_form(){
+      
+      $requete_select_liste_etudiant = db_select('bddprospectionprog_contacts');
+      $requete_select_liste_etudiant->fields('bddprospectionprog_contacts', array('Nom'));
+      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+
+      $Liste_rappels=array();
+
+      foreach ($result_select_liste_etudiant as $cle => $val){
+          $Liste_rappels[] = $val['Nom'];
+      }
+
+            
+      $form['supprimer_contacts'] = array(
+      '#title' => t('Supprimer'),
+      '#type' => 'select',
+      '#options' => $Liste_rappels,
+      ); 
+      
+      
+       $form['valider'] = array(
+        '#type' => 'submit',
+        '#value' => t('Supprimer'),
+        '#submit' => array('bddprospection_supprimer_contacts_submit')
+      );
+      
+           
+      return $form;
+    }
+    
+    
+    
+    function bddprospection_supprimer_contacts_submit($form, &$form_state){
+      
+      $resultat = $form_state['values']['supprimer_contacts'];
+      dpm($resultat);
+            
+      //db_delete('bddprospectionprog_prospecteurs') ->condition('Nom', $variable) ->execute();
+    } 
+    
+     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
+    
+    /*******************************************************************************
+     *
+     * ***********  PAGE ADMINISTRER BDD / GERER RAPPELS ****************************
+     * 
+    ********************************************************************************/
+
+
+
+     function bddprospection_gerer_rappels(){
+       $content = drupal_get_form('bddprospection_gerer_rappels_form');
+       return $content;
+
+     }   
+
+
+     function bddprospection_gerer_rappels_form(){
+
+
+    //FIELD Gérer appelss
+        $form['fieldset_gerer_rappels'] = array (
+            '#type' => 'fieldset',
+            '#title' => 'Gerer les rappels',
+            '#weight' => 0, 
+            '#collapsible' => TRUE, 
+            '#collapsed' => FALSE,
+        );   
+
+
+       $form['fieldset_gerer_appels']['boutton_consulter_rappels'] = array (
+            '#value' => t('Consulter la liste des rappels'),
+            '#type' => 'submit',
+            '#submit' => array('bddprospection_action_consulter_rappels') 
+        );
+
+        $form['fieldset_gerer_appels']['boutton_ajout_rappels'] = array (
+            '#value' => t('Ajouter un rappel'),
+            '#type' => 'submit',
+            '#submit' => array('bddprospection_action_ajouter_rappels') 
+        ); 
+
+    //     $form['fieldset_gerer_appels']['boutton_mise_a_jour_rappels'] = array (
+    //        '#value' => t('Mettre a jour'),
+    //        '#type' => 'submit',
+    //        '#submit' => array('bddprospection_action_mettre_a_jour_rappels') 
+    //    );
+
+        $form['fieldset_gerer_appels']['boutton_supprimer_rappels'] = array (
+            '#value' => t('Supprimer un rappel'),
+            '#type' => 'submit',
+            '#submit' => array('bddprospection_action_supprimer_rappels') 
+        );
+
+
+        function bddprospection_action_consulter_rappels($form, &$form_state) {
+          $form_state['redirect'] = 'bddprospection/consulter_rappels';
+        }
+
+        function bddprospection_action_ajouter_rappels($form, &$form_state) {
+          $form_state['redirect'] = 'bddprospection/ajout_rappels';
+        }
+
+    //    function bddprospection_action_mettre_a_jour__prospecteurs($form, &$form_state) {
+    //      $form_state['redirect'] = 'bddprospection/maj_prospecteurs';
+    //    }
+
+        function bddprospection_action_supprimer_rappels($form, &$form_state) {
+          $form_state['redirect'] = 'bddprospection/supprimer_rappels';
+        }
+
+
+
+        return $form;
+
+     }    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        //PAGE CONSULTER RAPPELS
+
+        function bddprospection_consulter_rappels() {
+
+      # configure the table header columns
+      $header = array(  
+        array('data' => 'Numero',                         'field' => 'Numero',                     'sort' => 'ASC'),
+        array('data' => 'Date_rappel',                    'field' => 'Date_rappel',                'sort' => 'ASC'),
+        array('data' => 'Etudiant',                       'field' => 'Etudiant',                   'sort' => 'ASC'),
+        array('data' => 'Entreprise',                     'field' => 'Entreprise',                 'sort' => 'ASC'),
+        array('data' => 'Contact',                        'field' => 'Contact',                    'sort' => 'ASC'),
+        array('data' => 'Appreciation',                   'field' => 'Appreciation',               'sort' => 'ASC'),
+        array('data' => 'Relance',                        'field' => 'Relance',                    'sort' => 'ASC'),
+        array('data' => 'Courriel envoye',                'field' => 'Courriel_envoye',            'sort' => 'ASC'),
+        array('data' => 'Plaquette envoyee',              'field' => 'Plaquette_envoyee',          'sort' => 'ASC'),
+        array('data' => 'Rendez vous obtenu',             'field' => 'Rendez_vous_obtenu',         'sort' => 'ASC'),
+        array('data' => 'Date du rendez-vous',            'field' => 'Date_rendez_vous',           'sort' => 'ASC'),
+        array('data' => 'Remarques complémentaires',      'field' => 'Remarques_complementaires',  'sort' => 'ASC'),
+       
+
+      );
+
+      # set the database table and initial SelectQuery options
+      # $select is a SelectQuery object.
+      # @see http://api.drupal.org/api/drupal/includes--database--select.inc/class/Se...
+      $select = db_select('bddprospectionprog_rappel','p')
+                  ->extend('PagerDefault')
+                  ->extend('TableSort');
+
+      # get the desired fields
+      # orderByHeader is a TableSort method (http://api.drupal.org/api/drupal/includes--tablesort.inc/function/TableS...)
+      $select->fields('p', array('Numero', 'Date_rappel', 'Etudiant', 'Entreprise', 'Contact','Appreciation','Relance','Courriel_envoye','Plaquette_envoyee','Rendez_vous_obtenu','Date_rendez_vous','Remarques_complementaires'))
+             ->limit(20)
+             ->orderByHeader($header)
+             ->orderBy('Numero', 'DESC');  # TODO this call seems to be losing to orderByHeader on page load
+
+      # execute the query
+      $results = $select->execute();
+
+      # configure the table rows, making the first column a link to our 'edit' page
+      $rows = array();
+      foreach ($results as $row) {
+        $rows[] = array($row->Numero,                           
+                        $row->Date_rappel,
+                        $row->Etudiant,
+                        $row->Entreprise,
+                        $row->Contact,
+                        $row->Appreciation,
+                        $row->Relance,
+                        $row->Courriel_envoye,
+                        $row->Plaquette_envoyee,
+                        $row->Rendez_vous_obtenu,
+                        $row->Date_rendez_vous,
+                        $row->Remarques_complementaires,
+                     
+        );
+      }
+
+      $output = theme('table', array('header' => $header,
+                                     'rows' => $rows ));
+
+      # add the pager
+      $output .= theme('pager');
+
+      return $output;
+
+    }
+
+
+    
+    
+    
+    
+    
+//PAGE AJOUTER RAPPELS
+
+    function bddprospection_ajouter_rappels(){
+      $content = drupal_get_form('bddprospection_ajouter_rappels_form');
+      return $content;
+      
+    }
+
+
+    function bddprospection_ajouter_rappels_form(){
+      
+      //Création des champs rappel
+ 
+       $form['rappel_identifiant'] = array(
+       '#title' => 'Identifiants HEI',
+       '#type' => 'textfield',
+       '#description' => t('Ne pas mettre de "h" au début ! Exemple : 10478 ;P'),
+       );
+
+
+       //Attention la variable date_par_default est utilisée pour tous les champs dates de la page ;P
+       $today = getdate();
+       $today_formaté = '$today[year]'.'-'.'$today[mon]'.'-'.'$today[mday]';
+
+       $format_date_rappel = 'Y-m-d';
+       $form['rappel_date_rappel'] = array(
+          '#type' => 'date_text', // types 'date_select' and 'date_timezone' are also supported. See .inc file.
+          '#title' => t('Sélectionner la date du rappel'),
+          '#default_value' => $today_formaté, 
+          '#date_format' => $format_date_rappel,
+          '#date_label_position' => 'within', // See other available attributes and what they do in date_api_elements.inc
+          '#date_timezone' => 'Europe/Paris',
+          '#date_year_range' => '0:+15',
+       );
+
+       $form['rappel_entreprise'] = array(
+       '#title' => 'Entreprise',
+       '#type' => 'textfield',
+       
+       );
+       
+       $form['rappel_contact'] = array(
+       '#title' => 'Contact',
+       '#type' => 'textfield',
+   
+       );
+       
+       
+       
+       //COMBOBOX
+       $form['rappel_appreciation'] = array(
+       '#title' => 'Appréciation',
+       '#type' => 'select',
+       '#options' => array(
+              0 => t('Pas de réponse'),
+              1 => t('Pas intéressée'),
+              2 => t('Intéressée'),
+              3 => t('Très intéressée'),
+              ),
+       );
+
+       //COMBOBOX
+       $form['rappel_relance'] = array(
+       '#title' => 'Relance',
+       '#type' => 'select',
+       '#options' => array(
+              0 => t('Jamais'),
+              1 => t('Dans plus d\'un an'),
+              2 => t('D\'ici trois mois à un an'),
+              3 => t('Dans moins de trois mois'),
+              4 => t('Rapidement'),
+              ),
+       );
+
+       $form['rappel_courriel_envoye'] = array(
+       '#type' => 'checkbox',
+       '#title' => t('Courriel envoyé'),
+       '#options' => array(
+              0 => '0',
+              1 => '1',
+        ),
+       );
+
+       $form['rappel_plaquette_envoye'] = array(
+       '#type' => 'checkbox',
+       '#title' => t('Plaquette envoyée'),
+       '#options' => array(
+              0 => '0',
+              1 => '1',
+        ),
+       );
+
+       $form['rappel_rendez_vous_obtenu'] = array(
+       '#type' => 'checkbox',
+       '#title' => t('Rendez-vous obtenu'),
+       '#options' => array(
+              0 => '0',
+              1 => '1',
+        ),
+       );
+
+       //Création d'un champ date  
+       $format_date_rdv = 'Y-m-d';
+       $form['rappel_date_rendez_vous'] = array(
+          '#type' => 'date_text', // types 'date_select' and 'date_timezone' are also supported. See .inc file.
+          '#title' => t('Date du rendez-vous'),
+          '#default_value' => $today_formaté,
+          '#date_format' => $format_date_rdv,
+          '#date_label_position' => 'within', // See other available attributes and what they do in date_api_elements.inc
+          '#date_timezone' => 'Europe/Paris',
+          '#date_year_range' => '0:+15',
+       );
+
+        $form['rappel_remarques'] = array(
+        '#title' => 'Remarques Complémentaires',
+        '#type' => 'textarea',
+        );
+
+       
+      
+           
+      $form['valider'] = array(
+        '#type' => 'submit',
+        '#value' => t('Soumettre'),
+        '#weight' => 4,
+        '#submit' => array('bddprospection_ajouter_rappels_submit')
+      );
+      
+      
+      return $form;
+      
+    }
+    
+    
+    
+    
+    
+    function bddprospection_ajouter_rappels_submit($form, &$form_state){
+      
+      //
+    
+    $appreciation="Pas de réponse";
+    switch($form_state['values']['rappel_appreciation']){
+      case 1:
+         $appreciation="Pas intéressée";
+      case 2:
+         $appreciation="Intéressée";
+      case 3:
+         $appreciation="Très intéressée";
+    }
+    
+    $relance="Jamais";
+    switch($form_state['values']['rappel_relance']){
+      case 0:
+         $relance="Jamais";
+      case 1:
+         $relance="Dans plus d\'un an";
+      case 2:
+         $relance="D\'ici trois mois à un an";
+      case 3:
+         $relance="Dans moins de trois mois";
+      case 4:
+         $relance="Rapidement";
+    }
+    
+    
+    
+    
+    
+    $query_appel = db_insert('bddprospectionprog_rappel');
+    $query_appel
+    ->fields(array(
+      'Date_rappel'=>$form_state['values']['rappel_date_rappel'],
+      'Etudiant'=>$form_state['values']['rappel_identifiant'],                   /////RECUPERER LE # courant! 
+      'Entreprise'=>$form_state['values']['rappel_entreprise'],
+      'Contact'=>$form_state['values']['rappel_contact'],
+      'Appreciation'=>$appreciation,
+      'Relance'=>$relance,
+      'Courriel_envoye'=>$form_state['values']['rappel_courriel_envoye'],
+      'Plaquette_envoyee'=>$form_state['values']['rappel_plaquette_envoye'],
+      'Rendez_vous_obtenu'=>$form_state['values']['rappel_rendez_vous_obtenu'],
+      'Date_rendez_vous'=>$form_state['values']['rappel_date_rendez_vous'],
+      'Remarques_complementaires'=>$form_state['values']['rappel_remarques'],    //// Limiter à 255 caractères
+     
+      ))
+
+    ->execute();
+      
       
     }
     
@@ -1493,11 +3555,319 @@ dpm($record);
     
     
     
+
+    //PAGE MAJ PROSPECTEURS
     
-    function bddprospection_supprimer_propsecteur(){
+//    function bddprospection_mettre_a_jour_prospecteurs(){
+//      $content = drupal_get_form('bddprospection_mettre_a_jour_prospecteurs_form');
+//      return $content;
+//    }
+//    
+//       
+//    
+//    function bddprospection_mettre_a_jour_prospecteurs_form(){
+//    
+//     
+//      $requete_select_liste_etudiant = db_select('bddprospectionprog_prospecteurs');
+//      $requete_select_liste_etudiant->fields('bddprospectionprog_prospecteurs', array('Nom'));
+//      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+//      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+//
+//      $Liste_etudiants=array();
+//
+//      foreach ($result_select_liste_etudiant as $cle => $val){
+//          $Liste_etudiants[] = $val['Nom'];
+//      }
+//
+//      $form['mettre_a_jour_prospecteurs_Nom'] = array(
+//      '#title' => 'Nom',
+//      '#type' => 'select',
+//      '#options' => $Liste_etudiants,
+//      ); 
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Charger les données du prospecteur'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_ajouter_prospecteurs_submit')
+//      );
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Prenom'] = array(
+//        '#title' => 'Prenom',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      $form['mettre_a_jour_prospecteurs_Matricule'] = array(
+//        '#title' => 'Matricule',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Mandat'] = array(
+//        '#title' => 'Mandat',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Classe'] = array(
+//        '#title' => 'Classe',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Telephone'] = array(
+//        '#title' => 'Telephone',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Departement'] = array(
+//        '#title' => 'Departement',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['mettre_a_jour_prospecteurs_Responsable'] = array(
+//        '#title' => 'Responsable',
+//        '#type' => 'textfield',
+//        '#default_value' => '',
+//      );
+//      
+//      
+//      $form['valider'] = array(
+//        '#type' => 'submit',
+//        '#value' => t('Soumettre'),
+//        '#weight' => 4,
+//        '#submit' => array('bddprospection_effectuer_mise_a_jour_prospecteurs_submit')
+//      );
+//        
+//      
+//      return $form;
+//      
+//    }
+//    
+//  
+//    
+//    function bddprospection_effectuer_mise_a_jour_prospecteurs_submit($form, &$form_state){
+//      
+//      db_update('bddprospectionprog_prospecteurs') ->fields( 
+//        array( 
+//          'Matricule_HEI' => $form_state['values']['mettre_a_jour_prospecteurs_Matricule'], 
+//          'Nom' => $form_state['values']['mettre_a_jour_prospecteurs_Nom'], 
+//          'Prenom' => $form_state['values']['mettre_a_jour_prospecteurs_Prenom'], 
+//          'Mandat' => $form_state['values']['mettre_a_jour_prospecteurs_Mandat'], 
+//          'Classe' => $form_state['values']['mettre_a_jour_prospecteurs_Classe'], 
+//          'Telephone' => $form_state['values']['mettre_a_jour_prospecteurs_Telephone'], 
+//          'Departement' => $form_state['values']['mettre_a_jour_prospecteurs_Departement'], 
+//          'Directeur_de_departement' => $form_state['values']['mettre_a_jour_prospecteurs_Responsable'], 
+//        ) 
+//      ) ->execute();
+//      
+//    }
+//   
+    
+    
+    
+    
+   
+    
+    
+    
+    
+    
+   function bddprospection_supprimer_rappels(){
       
+       $content = drupal_get_form('bddprospection_supprimer_rappels_form');
+       return $content;
       
     }
+    
+    
+      function bddprospection_supprimer_rappels_form(){
+      
+      $requete_select_liste_etudiant = db_select('bddprospectionprog_rappel');
+      $requete_select_liste_etudiant->fields('bddprospectionprog_rappel', array('Numero'));
+      $execute_select_liste_etudiant = $requete_select_liste_etudiant->execute();
+      $result_select_liste_etudiant =  $execute_select_liste_etudiant->fetchAll(PDO::FETCH_ASSOC);
+
+      $Liste_rappels=array();
+
+      foreach ($result_select_liste_etudiant as $cle => $val){
+          $Liste_rappels[] = $val['Numero'];
+      }
+
+            
+      $form['supprimer_rappels'] = array(
+      '#title' => t('Supprimer'),
+      '#type' => 'select',
+      '#options' => $Liste_rappels,
+      ); 
+      
+      
+       $form['valider'] = array(
+        '#type' => 'submit',
+        '#value' => t('Supprimer'),
+        '#submit' => array('bddprospection_supprimer_rappels_submit')
+      );
+      
+           
+      return $form;
+    }
+    
+    
+    
+    function bddprospection_supprimer_rappels_submit($form, &$form_state){
+      
+      $resultat = $form_state['values']['supprimer_rappels'];
+      dpm($resultat);
+            
+      //db_delete('bddprospectionprog_prospecteurs') ->condition('Nom', $variable) ->execute();
+    } 
+    
+     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
+
+      /*******************************************************************************
+       *
+       * ***********************  CONSULTER LES ARCHIVES ****************************
+       * 
+      ********************************************************************************/
+
+      
+     function bddprospection_consulter_archives() {
+
+      # configure the table header columns
+      $header = array(  
+        array('data' => 'Date_prospection',      'field' => 'Date_prospection',      'sort' => 'ASC'),
+        array('data' => 'Nom_Prospecteur',       'field' => 'Nom_Prospecteur',       'sort' => 'ASC'),
+        array('data' => 'Nom_entreprise',        'field' => 'Nom_entreprise',        'sort' => 'ASC'),
+        array('data' => 'Contact',               'field' => 'Contact',               'sort' => 'ASC'),
+        array('data' => 'Fonction',              'field' => 'Fonction',              'sort' => 'ASC'),
+        array('data' => 'Telephone',             'field' => 'Telephone',             'sort' => 'ASC'),
+        array('data' => 'Mail',                  'field' => 'Mail',                  'sort' => 'ASC'),
+        array('data' => 'Appreciation',          'field' => 'Appreciation',          'sort' => 'ASC'),
+        array('data' => 'Relance',               'field' => 'Relance',               'sort' => 'ASC'),
+    
+      );
+
+      # set the database table and initial SelectQuery options
+      # $select is a SelectQuery object.
+      # @see http://api.drupal.org/api/drupal/includes--database--select.inc/class/Se...
+      $select = db_select('bddprospectionprog_archives_2008_2011','p')
+                  ->extend('PagerDefault')
+                  ->extend('TableSort');
+
+      # get the desired fields
+      # orderByHeader is a TableSort method (http://api.drupal.org/api/drupal/includes--tablesort.inc/function/TableS...)
+      $select->fields('p', array('Date_prospection', 'Nom_Prospecteur', 'Nom_entreprise', 'Contact', 'Fonction','Telephone','Mail','Appreciation','Relance'))
+             ->limit(20)
+             ->orderByHeader($header)
+             ->orderBy('Date_prospection', 'DESC');  # TODO this call seems to be losing to orderByHeader on page load
+
+      # execute the query
+      $results = $select->execute();
+
+      # configure the table rows, making the first column a link to our 'edit' page
+      $rows = array();
+      foreach ($results as $row) {
+        $rows[] = array($row->Date_prospection,                           
+                        $row->Nom_Prospecteur,
+                        $row->Nom_entreprise,
+                        $row->Contact,
+                        $row->Fonction,
+                        $row->Telephone,
+                        $row->Mail,
+                        $row->Appreciation,
+                        
+        );
+      }
+
+      $output = theme('table', array('header' => $header,
+                                     'rows' => $rows ));
+
+      # add the pager
+      $output .= theme('pager');
+
+      return $output;
+
+    }
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
